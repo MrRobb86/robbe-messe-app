@@ -16,11 +16,16 @@ in dieser Mail" (die Mail ist das Backup).
 
 1. n8n öffnen → **Workflows → Import from File** → `messe-lead.workflow.json`
 2. **Credentials zuordnen** (Nodes mit rotem Ausrufezeichen):
-   - **Odoo-Nodes** („Odoo: Lead anlegen", „Odoo: Lead aus Karte"): Odoo-Credential
-     anlegen (URL der Odoo-Instanz, Datenbankname, Benutzer-E-Mail, Passwort/API-Key)
    - **E-Mail-Nodes** (4×): bestehendes SMTP-Credential auswählen
    - **HTTP-Nodes** („KI liest Visitenkarte", „Gespräch zusammenfassen"):
      bestehendes OpenAI-Credential auswählen (wie im VOM-FASS-Workflow)
+   - **Odoo-Nodes** („Odoo: Lead anlegen", „Odoo: Lead aus Karte"):
+     **Kann warten** (Stand 07/2026: Odoo-Zugangsdaten unklar). Ohne Credential
+     laufen diese Nodes kontrolliert auf Fehler und die Kette läuft weiter —
+     die Info-Mail an Florian meldet dann „⚠ FEHLGESCHLAGEN — Daten nur in
+     dieser Mail". **Kein Lead geht verloren, die Mail ist das Backup.**
+     Sobald Odoo-Zugangsdaten da sind: Credential anlegen (URL, Datenbank,
+     Benutzer-E-Mail, Passwort/API-Key) und in beiden Nodes auswählen — fertig.
 3. Node „Konfiguration" prüfen: Absender, Florian-Mail, Buchungslink, Telefon
 4. **Workflow aktivieren** → Production-URL ist dann
    `https://n8n.srv1047901.hstgr.cloud/webhook/messe-lead`
