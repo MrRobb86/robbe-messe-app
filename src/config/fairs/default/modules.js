@@ -38,32 +38,38 @@ export const modules = [
   },
   {
     id: 'copilot',
-    kind: 'demoScript',
+    kind: 'portal',
     eyebrow: '03 — PRODUKT',
-    title: 'RoboAI Copilot',
-    teaser: 'Das KI-Portal für dein Team — eine kurze Tour.',
-    hubPosition: { x: 210, y: 620, rot: 1.2 },
-    botTeaser: 'Frag mich, wie der RoboAI Copilot in deinem Team arbeitet.',
+    title: 'Robbe AI-Copilot',
+    teaser: 'Das KI-Portal für dein Team — ausprobieren erlaubt.',
+    hubPosition: { x: 230, y: 680, rot: 1.2 },
+    botTeaser: 'Frag mich, wie der Robbe AI-Copilot in deinem Team arbeitet.',
     payload: {
-      // Geführte Tour: Screens/Storyline. tryUrl = Live-Instanz (ai.tool.center
-      // sendet keine frame-ancestors-Header → einbettbar). Offen: Demo-User
-      // ohne Login, sonst sehen Besucher nur den Login-Screen.
-      tryUrl: 'https://robbe-consulting.ai.tool.center/library/apps',
-      steps: [
+      // Ausfuehrliche Portal-Beschreibung + "Zum Portal"-Button.
+      // portalUrl: ai.tool.center sendet keine frame-ancestors-Header →
+      // einbettbar. Offen: Demo-User ohne Login (aven8 fragen), sonst sehen
+      // Besucher den Login-Screen.
+      portalUrl: 'https://robbe-consulting.ai.tool.center/library/apps',
+      frameLabel: 'ROBBE AI-COPILOT — LIVE',
+      intro:
+        'Der Robbe AI-Copilot ist das KI-Portal für dein ganzes Team: ' +
+        'fertige KI-Agenten für Angebote, E-Mails, Recherche und eure ' +
+        'Alltagsprozesse — ohne Prompt-Wissen, im eigenen Firmen-Design.',
+      features: [
         {
+          eyebrow: 'AGENTEN',
           title: 'Ein Portal, alle KI-Agenten',
-          text: 'Deine Mitarbeiter arbeiten mit fertigen KI-Agenten — Angebote, E-Mails, Recherche. Ohne Prompt-Wissen, im eigenen Firmen-Design.',
-          image: '/fairs/default/copilot-1.png',
+          text: 'Deine Mitarbeiter wählen den passenden Agenten und legen los — Angebot schreiben, E-Mail beantworten, Markt recherchieren. Kein Prompt-Studium nötig.',
         },
         {
+          eyebrow: 'WISSEN',
           title: 'Firmenwissen eingebaut',
           text: 'Jeder Agent kennt eure Dokumente, Prozesse und Produkte. Antworten kommen aus DEINEM Unternehmen, nicht aus dem Internet.',
-          image: '/fairs/default/copilot-2.png',
         },
         {
+          eyebrow: 'DATENSCHUTZ',
           title: 'DSGVO-konform gehostet',
-          text: 'Self-hosted in der EU. Keine Daten an US-Clouds, volle Kontrolle, klare Rollen.',
-          image: '/fairs/default/copilot-3.png',
+          text: 'Gehostet in der EU. Keine Daten an US-Clouds, volle Kontrolle, klare Rollen und Rechte.',
         },
       ],
     },
@@ -94,38 +100,53 @@ export const modules = [
     kind: 'contentCards',
     eyebrow: '05 — SO ARBEITEN WIR',
     title: 'Wie wir arbeiten',
-    teaser: 'Von der Strategie bis zur laufenden Automatisierung.',
+    teaser: 'Unser 12-Schritte-Plan — von der Analyse bis zur Verankerung.',
     hubPosition: { x: 1330, y: 590, rot: -1.4 },
-    botTeaser: 'Frag mich, wie ein Strategie-Workshop bei euch ablaufen würde.',
+    botTeaser: 'Frag mich, wie unser 12-Schritte-Plan bei euch ablaufen würde.',
     payload: {
+      // Der 12-Schritte-Plan von robbe-consulting.de/ki-beratung (Stand 07/2026).
       cards: [
-        {
-          eyebrow: 'SCHRITT 1',
-          title: 'Strategie-Workshop',
-          text: 'Ein Tag, dein Team, alle Prozesse auf dem Tisch. Am Ende: eine priorisierte KI-Roadmap mit Quick Wins.',
-        },
-        {
-          eyebrow: 'SCHRITT 2',
-          title: 'Schulung & Befähigung',
-          text: 'Deine Mitarbeiter lernen, mit KI zu arbeiten — praxisnah, an euren echten Aufgaben. Keine Folienschlacht.',
-        },
-        {
-          eyebrow: 'SCHRITT 3',
-          title: 'Umsetzung & Automatisierung',
-          text: 'Wir bauen: Automatisierungen, Chatbots, Unternehmens-KI. Angebunden an eure Systeme, betrieben in der EU.',
-        },
-        {
-          eyebrow: 'LAUFEND',
-          title: 'Begleitung',
-          text: 'KI ist kein Projekt mit Enddatum. Wir bleiben dran — neue Anwendungsfälle, neue Modelle, dein Vorsprung.',
-        },
+        { eyebrow: 'SCHRITT 01', title: 'Grundlagen-Workshop', text: 'Was ist KI, was kann sie — und was nicht? Gemeinsames Verständnis im Führungsteam schaffen.' },
+        { eyebrow: 'SCHRITT 02', title: 'Analysen', text: 'Outside-in durch den Berater + Inside-out mit der Geschäftsführung. Prozesse, Potenziale und Risiken werden sichtbar.' },
+        { eyebrow: 'SCHRITT 03', title: 'Kick-Off Geschäftsführung', text: 'Analyse-Ergebnisse, erste Handlungsfelder, Commitment der Führungsebene für die Transformation.' },
+        { eyebrow: 'SCHRITT 04', title: 'Kick-Off Projektteam', text: 'Das interne Team wird eingebunden, Rollen verteilt und der Fahrplan gemeinsam beschlossen.' },
+        { eyebrow: 'SCHRITT 05', title: 'AI Champions', text: 'Interne Multiplikatoren werden identifiziert und befähigt — sie tragen die KI in die Abteilungen.' },
+        { eyebrow: 'SCHRITT 06', title: 'Schulungen', text: 'Mindestens 8 Einheiten à 90 Minuten — praxisnah, branchenspezifisch, mit echten Anwendungsfällen.' },
+        { eyebrow: 'SCHRITT 07', title: 'Strategie-Workshop', text: 'Vision, Anwendungsfälle und Roadmap für die ersten 100 Tage — gemeinsam erarbeitet und dokumentiert.' },
+        { eyebrow: 'SCHRITT 08', title: 'Umsetzung der Roadmap', text: 'Schritt für Schritt — priorisiert, messbar und mit klaren Verantwortlichkeiten.' },
+        { eyebrow: 'SCHRITT 09', title: 'Unternehmens-KI einführen', text: 'Sichere, DSGVO-konforme KI-Plattform — Serverstandort Deutschland, alle relevanten Modelle.' },
+        { eyebrow: 'SCHRITT 10', title: 'Umsetzung & Test', text: 'AI Champions treiben Pilotprojekte voran. Erste Automationen und Agenten gehen live.' },
+        { eyebrow: 'SCHRITT 11', title: 'Change Management', text: 'Mitarbeiter aktiv durch den Wandel begleiten — Widerstände abbauen, Akzeptanz aufbauen.' },
+        { eyebrow: 'SCHRITT 12', title: 'Verankern', text: 'KI-Richtlinien, laufende Schulung und Sparringspartnerschaft sichern den Erfolg dauerhaft.' },
+      ],
+    },
+  },
+  {
+    id: 'angebote',
+    kind: 'contentCards',
+    eyebrow: '06 — LEISTUNGEN',
+    title: 'Was wir anbieten',
+    teaser: 'Von KI-Beratung bis Telefonagent — acht Wege zu deinem Vorsprung.',
+    hubPosition: { x: 110, y: 380, rot: 1.4 },
+    botTeaser: 'Frag mich, welches Angebot zu deinem Unternehmen passt.',
+    payload: {
+      // Leistungen von robbe-consulting.de (Stand 07/2026).
+      cards: [
+        { eyebrow: 'BERATUNG', title: 'KI-Beratung', text: 'Strategische KI-Integration in 12 Schritten — EU-AI-Act-konform, DSGVO-sicher. Done-with-you, nicht Done-for-you.' },
+        { eyebrow: 'SCHULUNG', title: 'KI-Schulungen', text: 'Von KI-Grundlagen bis Agenten und Automatisierungen — praxisnah, verständlich, sofort umsetzbar.' },
+        { eyebrow: 'SCHULUNG', title: 'Vertriebsschulungen', text: 'Für Jungverkäufer bis Vertriebsleiter — 18 Jahre B2B-Direktvertrieb, praxisnah und branchenspezifisch.' },
+        { eyebrow: 'COACHING', title: 'Vertriebscoaching', text: 'Echtes Mitreisen im Vertriebsalltag, Einzel- und Team-Formate — plus KI als Verstärker.' },
+        { eyebrow: 'UMSETZUNG', title: 'KI-Workflows & Automatisierung', text: 'Prozesse analysieren, digitalisieren, automatisieren — maßgeschneiderte Agenten in wenigen Wochen startklar.' },
+        { eyebrow: 'PRODUKT', title: 'Fonio — KI-Telefonagent', text: 'Nimmt Anrufe an wie ein Mitarbeiter: 24/7, auf Deutsch, DSGVO-konform. Wir sind Gold-Partner.' },
+        { eyebrow: 'PROGRAMM', title: 'KI-Führerschein', text: '90-Tage-Lernprogramm mit Online-Prüfung und Zertifikat — auch als kompakte Light-Variante.' },
+        { eyebrow: 'RECHT', title: 'EU AI Act & KI-Richtlinien', text: 'Seit 08/2025 verpflichtend — wir machen dein Unternehmen rechtssicher, verständlich und praxisnah.' },
       ],
     },
   },
   {
     id: 'team',
     kind: 'team',
-    eyebrow: '06 — MENSCHEN',
+    eyebrow: '07 — MENSCHEN',
     title: 'Das Team',
     teaser: 'Menschen, keine Buzzwords.',
     hubPosition: { x: 800, y: 660, rot: 0.9 },
@@ -134,11 +155,16 @@ export const modules = [
       members: [
         {
           name: 'Florian Robbe',
-          role: 'Gründer · KI-Beratung & Vertrieb',
-          text: 'Vertriebsprofi und KI-Berater — bringt KI dorthin, wo sie Umsatz macht.',
-          image: '/fairs/default/team-florian.jpg',
+          role: 'Inhaber · KI-Manager & Vertriebsberater',
+          text: '18 Jahre B2B-Direktvertrieb (Würth, Baumaschinenhandel), TÜV-SÜD-zertifizierter KI-Manager. Praktiker, kein Theoretiker: Done-with-you, nicht Done-for-you.',
+          image: '/fairs/default/team-florian.png',
         },
-        // Weitere Team-Mitglieder hier ergaenzen (Bild nach public/fairs/default/)
+        {
+          name: 'Ghiath',
+          role: 'KI-Workflow-Spezialist & Consultant',
+          text: 'Master IT-Ingenieurwesen mit Machine-Learning-Spezialisierung (KIT Karlsruhe). Entwickelt KI-Workflows und setzt sie gemeinsam mit Kunden um.',
+          image: '/fairs/default/team-ghiath.png',
+        },
       ],
     },
   },
@@ -148,7 +174,7 @@ export const modules = [
     eyebrow: 'TERMIN & KONTAKT',
     title: 'Sprechen wir!',
     teaser: 'Termin buchen oder Kontakt dalassen — 30 Sekunden.',
-    hubPosition: { x: 1470, y: 350, rot: 0 },
+    hubPosition: { x: 1480, y: 395, rot: 0 },
     accentDot: true, // einzige Karte mit permanentem Puls-Punkt
     botTeaser: null, // im Kontakt-Modul schweigt der Bot
     payload: {},

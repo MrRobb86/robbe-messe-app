@@ -8,6 +8,7 @@
 import { useEffect, useState } from 'react'
 import { config } from '../config/index.js'
 import { newLeadId, submitLead } from '../kiosk/leadQueue.js'
+import { effective } from '../kiosk/settings.js'
 import { useKiosk } from '../kiosk/KioskSession.jsx'
 import './lead.css'
 
@@ -68,7 +69,7 @@ export default function LeadModule() {
         </p>
         <div className="qr-block">
           <img src={config.qr.vcard} alt="Kontakt-QR-Code" />
-          <p className="mono">{config.kontakt.telefon}</p>
+          <p className="mono">{effective(config).telefon}</p>
         </div>
       </div>
     )
@@ -80,9 +81,9 @@ export default function LeadModule() {
         <p className="eyebrow">DER SCHNELLSTE WEG</p>
         <h3>Termin buchen</h3>
         <p>Such dir direkt einen Termin mit {config.kontakt.name} aus — 30 Minuten, kostenlos.</p>
-        {config.urls.termin ? (
+        {effective(config).terminUrl ? (
           <iframe
-            src={config.urls.termin}
+            src={effective(config).terminUrl}
             title="Terminbuchung"
             style={{ flex: 1, minHeight: 320, border: '1px solid var(--ink-200)', borderRadius: 'var(--r-lg)' }}
           />
@@ -94,7 +95,7 @@ export default function LeadModule() {
         </div>
         <div className="lead-phone">
           <span className="dot" />
-          {config.kontakt.telefon}
+          {effective(config).telefon}
         </div>
       </div>
 

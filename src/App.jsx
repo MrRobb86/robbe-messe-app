@@ -10,6 +10,7 @@ import MesseBot from './components/MesseBot.jsx'
 import AdminOverlay from './components/AdminOverlay.jsx'
 import { KioskSessionProvider, useKiosk } from './kiosk/KioskSession.jsx'
 import { startQueueWorker } from './kiosk/leadQueue.js'
+import { effective } from './kiosk/settings.js'
 import { config, modules, getModule } from './config/index.js'
 
 // "Noch da?"-Overlay mit Countdown-Kreis (ein animiertes Element).
@@ -68,10 +69,23 @@ function Kiosk() {
   const [attractFocus, setAttractFocus] = useState({ type: 'center' })
   const [closing, setClosing] = useState(false)
   const [adminOpen, setAdminOpen] = useState(false)
+  const [layoutEdit, setLayoutEdit] = useState(false)
   const logoTaps = useRef({ count: 0, t: 0 })
 
   // Lead-Queue-Worker laeuft app-lebenslang.
   useEffect(() => startQueueWorker(), [])
+
+  // UI-Skalierung --k: Overlays (Module, Bot, Chrome) sind fuer 1920×1080
+  // dimensioniert und schrumpfen auf kleineren Fenstern proportional mit.
+  useEffect(() => {
+    function setScale() {
+      const k = Math.min(1, window.innerWidth / 1920, window.innerHeight / 1080)
+      document.documentElement.style.setProperty('--k', String(Math.max(0.5, k)))
+    }
+    setScale()
+    window.addEventListener('resize', setScale)
+    return () => window.removeEventListener('resize', setScale)
+  }, [])
 
   const mod = activeModuleId ? getModule(activeModuleId) : null
 
@@ -113,6 +127,7 @@ function Kiosk() {
         focus={focus}
         flightMode={flightMode}
         hubHidden={mode === 'module'}
+        editMode={layoutEdit && mode === 'hub'}
         onOpenModule={openModule}
       />
 
@@ -139,11 +154,17 @@ function Kiosk() {
 
       <div className="stage-phone">
         <span className="dot" />
-        {config.kontakt.telefon}
+        {effective(config).telefon}
       </div>
 
       {warnVisible && <IdleWarn />}
-      {adminOpen && <AdminOverlay onClose={() => setAdminOpen(false)} />}
+      {adminOpen && (
+        <AdminOverlay
+          onClose={() => setAdminOpen(false)}
+          layoutEdit={layoutEdit}
+          onToggleLayoutEdit={() => setLayoutEdit((v) => !v)}
+        />
+      )}
     </div>
   )
 }

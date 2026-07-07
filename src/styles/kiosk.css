@@ -1,5 +1,24 @@
 /* Kiosk-Haertung: Touch-Verhalten, Tap-Targets, wiederkehrende Bausteine. */
 
+/* UI-Skalierung: Alle Nicht-Buehnen-Ebenen (Module, Bot, Chrome) sind fuer
+   1920×1080 dimensioniert. --k (JS, App.jsx) skaliert sie auf kleineren
+   Fenstern proportional herunter — auf dem Messedisplay ist --k = 1.
+   `zoom` statt transform: skaliert Layout inkl. fixed-Positionen, laeuft
+   in Chrome/Android-WebView (Fully Kiosk). */
+.module-layer,
+.bot-sheet,
+.bot-bubble,
+.bot-teaser,
+.back-btn,
+.progress-dots,
+.stage-phone,
+.stage-logo,
+.idle-warn,
+.attract-chat,
+.attract-pill {
+  zoom: var(--k, 1);
+}
+
 /* Kein Markieren, kein Long-Press-Callout, kein Browser-Zoom auf der Buehne. */
 body {
   user-select: none;

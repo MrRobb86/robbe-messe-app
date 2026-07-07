@@ -7,6 +7,7 @@
 // (sendSessionEnd), Formulare verschwinden einfach.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { config, getModule } from '../config/index.js'
+import { effective, PERSISTENT_KEYS } from './settings.js'
 
 const KioskContext = createContext(null)
 
@@ -37,10 +38,11 @@ export function KioskSessionProvider({ children }) {
     setActiveModuleId(null)
     setWarnVisible(false)
     dirty.current = false
-    // localStorage selektiv wischen — die Lead-Queue MUSS ueberleben.
-    const keep = localStorage.getItem('rq_lead_queue')
+    // localStorage selektiv wischen — Lead-Queue, Einstellungen und
+    // Hub-Layout MUESSEN ueberleben (keine Besucherdaten).
+    const keep = PERSISTENT_KEYS.map((k) => [k, localStorage.getItem(k)])
     localStorage.clear()
-    if (keep) localStorage.setItem('rq_lead_queue', keep)
+    for (const [k, v] of keep) if (v != null) localStorage.setItem(k, v)
   }, [])
 
   const enterAttract = useCallback(() => {
@@ -104,14 +106,16 @@ export function KioskSessionProvider({ children }) {
         return
       }
 
+      const idle = effective(config).idle
+
       if (m === 'hub') {
-        if (idleMs >= config.idle.hubToAttractMs) enterAttract()
+        if (idleMs >= idle.hubToAttractMs) enterAttract()
         return
       }
 
       // m === 'module'
       const mod = getModule(activeRef.current)
-      const warnAfter = mod && INPUT_KINDS.has(mod.kind) ? config.idle.warnInputMs : config.idle.warnDefaultMs
+      const warnAfter = mod && INPUT_KINDS.has(mod.kind) ? idle.warnInputMs : idle.warnDefaultMs
 
       if (warnDeadline.current) {
         if (now >= warnDeadline.current) {

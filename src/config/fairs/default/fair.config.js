@@ -38,16 +38,16 @@ export const fairConfig = {
   },
 
   urls: {
-    website: 'https://www.robbe-consulting.de/?kiosk=1',
-    termin: '', // Google-Terminplanungs-URL (dieselbe wie auf der Website) — TODO
-    datenschutz: 'https://www.robbe-consulting.de/datenschutz',
+    website: 'https://robbe-consulting.de/',
+    termin: 'https://calendar.app.google/CfdmPcBowRim2uJe7', // Google-Terminplanung (wie Website)
+    datenschutz: 'https://robbe-consulting.de/datenschutz',
   },
 
-  // Statische QR-Grafiken (offlinefaehig) — public/fairs/<fairId>/
-  // Platzhalter! Vor der Messe echte QR-Codes generieren und ersetzen.
+  // Statische QR-Codes (offlinefaehig) — public/fairs/<fairId>/
+  // qr-termin.png = Google-Terminbuchung, qr-vcard.png = vCard Florian.
   qr: {
-    termin: '/fairs/default/qr-termin.svg',
-    vcard: '/fairs/default/qr-vcard.svg',
+    termin: '/fairs/default/qr-termin.png',
+    vcard: '/fairs/default/qr-vcard.png',
   },
 
   // DSGVO-Einwilligung in Klartext (versioniert — Wortlaut geht mit ins Lead-Payload).

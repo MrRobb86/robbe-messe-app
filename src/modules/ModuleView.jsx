@@ -35,55 +35,49 @@ function TeamCards({ members }) {
   )
 }
 
-// Gefuehrte Copilot-Tour: grosse Schritte, Weiter/Zurueck, optional
-// "Selbst ausprobieren" (Demo-Instanz — Entscheidung W4).
-function Tour({ payload }) {
-  const [step, setStep] = useState(0)
+// Portal-Modul (Robbe AI-Copilot): ausfuehrliche Beschreibung + prominenter
+// "Zum Portal"-Button, der die Live-Instanz im Demo-Rahmen oeffnet.
+function Portal({ payload }) {
   const [live, setLive] = useState(false)
-  const s = payload.steps[step]
 
-  if (live && payload.tryUrl) {
-    return <IframeModule payload={{ url: payload.tryUrl, frameLabel: 'ROBOAI COPILOT — DEMO' }} />
+  if (live && payload.portalUrl) {
+    return (
+      <>
+        <IframeModule payload={{ url: payload.portalUrl, frameLabel: payload.frameLabel }} />
+        <button
+          className="chip pressable"
+          style={{ alignSelf: 'flex-start', marginTop: 16 }}
+          onClick={() => setLive(false)}
+        >
+          ← Zur Beschreibung
+        </button>
+      </>
+    )
   }
 
   return (
-    <div className="tour">
-      <div className="tour__step" key={step}>
-        <img className="tour__image" src={s.image} alt="" onError={(e) => (e.target.style.visibility = 'hidden')} />
-        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 44, margin: '28px 0 12px', color: 'var(--ink-900)' }}>
-          {s.title}
-        </h3>
-        <p style={{ fontSize: 26, color: 'var(--ink-500)', margin: 0 }}>{s.text}</p>
-      </div>
-      <div className="tour__nav">
-        <button
-          className="pill pressable"
-          disabled={step === 0}
-          style={{ opacity: step === 0 ? 0.35 : 1 }}
-          onClick={() => setStep((x) => Math.max(0, x - 1))}
-        >
-          ←
-        </button>
-        <div className="tour__dots">
-          {payload.steps.map((_, i) => (
-            <span key={i} className={i === step ? 'active' : ''} />
-          ))}
-        </div>
-        {step < payload.steps.length - 1 ? (
-          <button className="pill pill--primary pressable" onClick={() => setStep((x) => x + 1)}>
-            Weiter →
-          </button>
-        ) : payload.tryUrl ? (
-          <button className="pill pill--primary pressable" onClick={() => setLive(true)}>
-            Selbst ausprobieren →
-          </button>
-        ) : (
-          <div className="qr-block">
-            <img src={config.qr.vcard} alt="QR-Code" style={{ width: 180, height: 180 }} />
-            <p>Mehr erfahren? Nimm uns mit aufs Handy.</p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 28, minHeight: 0, flex: 1 }}>
+      <p style={{ fontSize: 28, lineHeight: 1.5, color: 'var(--ink-700)', margin: 0, maxWidth: 1100 }}>
+        {payload.intro}
+      </p>
+      <div className="cards-grid scrollable">
+        {payload.features.map((f) => (
+          <div key={f.title} className="content-card">
+            <p className="eyebrow">{f.eyebrow}</p>
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
           </div>
-        )}
+        ))}
       </div>
+      {payload.portalUrl && (
+        <button
+          className="pill pill--primary pressable"
+          style={{ alignSelf: 'flex-start' }}
+          onClick={() => setLive(true)}
+        >
+          Zum Portal →
+        </button>
+      )}
     </div>
   )
 }
@@ -98,8 +92,8 @@ export default function ModuleView({ mod }) {
           <ChatScreen payload={mod.payload} />
         </div>
       )
-    case 'demoScript':
-      return <Tour payload={mod.payload} />
+    case 'portal':
+      return <Portal payload={mod.payload} />
     case 'contentCards':
       return <ContentCards cards={mod.payload.cards} />
     case 'team':

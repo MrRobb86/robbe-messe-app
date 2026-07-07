@@ -1,8 +1,13 @@
 // Die Buehne: 1920×1080-Design-Flaeche, Kamera-Transform, Hub-Konstellation.
 // Attract-Mode und Hub teilen sich diese eine Buehne — der Uebergang ist nur
 // eine Kamerafahrt, kein Szenenwechsel ("der Bildschirmschoner war die Karte").
-import { useEffect, useState } from 'react'
+//
+// Layout-Modus (Einstellungsseite): Karten lassen sich per Drag verschieben;
+// Positionen liegen als Override in localStorage (settings.js) und
+// ueberleben Session-Reset und Reload.
+import { useEffect, useRef, useState } from 'react'
 import { modules, config } from '../config/index.js'
+import { getLayout, saveLayoutPos } from '../kiosk/settings.js'
 import './stage.css'
 
 const CARD_W = 400
@@ -11,25 +16,11 @@ const DESIGN_W = 1920
 const DESIGN_H = 1080
 const CENTER = { x: 960, y: 470 } // Wortmarke
 
-export function cardCenter(mod) {
-  return { x: mod.hubPosition.x + CARD_W / 2, y: mod.hubPosition.y + CARD_H / 2 }
-}
-
 // Kamera-Transform: Punkt (x,y) der Buehne ins Viewport-Zentrum, Zoom s.
 function cameraTransform({ x, y, scale }) {
   const tx = DESIGN_W / 2 - x * scale
   const ty = DESIGN_H / 2 - y * scale
   return `translate(${tx}px, ${ty}px) scale(${scale})`
-}
-
-// focus → Kamera-Ziel. focus:
-//   {type:'overview'} | {type:'center', scale?} | {type:'module', id, scale?}
-export function focusToCamera(focus) {
-  if (!focus || focus.type === 'overview') return { x: DESIGN_W / 2, y: DESIGN_H / 2, scale: 1 }
-  if (focus.type === 'center') return { ...CENTER, scale: focus.scale || 1.15 }
-  const mod = modules.find((m) => m.id === focus.id)
-  if (!mod) return { x: DESIGN_W / 2, y: DESIGN_H / 2, scale: 1 }
-  return { ...cardCenter(mod), scale: focus.scale || 1.9 }
 }
 
 // Fittet die Design-Flaeche in den realen Viewport (contain, zentriert).
@@ -51,37 +42,69 @@ function useStageFit() {
   return fit
 }
 
-function ConstellationLines() {
+function ConstellationLines({ positions }) {
+  const centers = modules.map((m) => {
+    const p = positions[m.id]
+    return { id: m.id, x: p.x + CARD_W / 2, y: p.y + CARD_H / 2 }
+  })
   return (
     <svg className="stage-lines" viewBox={`0 0 ${DESIGN_W} ${DESIGN_H}`}>
-      {modules.map((m) => {
-        const c = cardCenter(m)
-        return <line key={m.id} x1={CENTER.x} y1={CENTER.y} x2={c.x} y2={c.y} />
-      })}
-      {modules.map((m) => {
-        const c = cardCenter(m)
-        return <circle key={m.id} cx={c.x} cy={c.y} r="6" />
-      })}
+      {centers.map((c) => (
+        <line key={c.id} x1={CENTER.x} y1={CENTER.y} x2={c.x} y2={c.y} />
+      ))}
+      {centers.map((c) => (
+        <circle key={c.id} cx={c.x} cy={c.y} r="6" />
+      ))}
       <circle cx={CENTER.x} cy={CENTER.y} r="6" />
     </svg>
   )
 }
 
-function HubCard({ mod, index, onOpen }) {
-  const { x, y, rot } = mod.hubPosition
-  // Pro Karte eigener Drift (9–14 s), damit das Robbeversum "schwebt" statt zappelt.
-  const driftDur = `${9 + (index % 6)}s`
-  const driftX = `${(index % 3) * 4 - 4}px`
-  const driftY = `${(index % 4) * 4 - 8}px`
+function HubCard({ mod, pos, index, editMode, fitScale, onOpen, onMoved }) {
+  const drag = useRef(null)
+
+  // Pro Karte eigener Drift (9–14 s) — im Layout-Modus aus, sonst "zittert" das Ziehen.
+  const driftStyle = editMode
+    ? { animation: 'none' }
+    : {
+        '--drift-dur': `${9 + (index % 6)}s`,
+        '--drift-x': `${(index % 3) * 4 - 4}px`,
+        '--drift-y': `${(index % 4) * 4 - 8}px`,
+      }
+
+  function onPointerDown(e) {
+    if (!editMode) return
+    e.preventDefault()
+    e.currentTarget.setPointerCapture(e.pointerId)
+    drag.current = { startX: e.clientX, startY: e.clientY, origX: pos.x, origY: pos.y }
+  }
+  function onPointerMove(e) {
+    if (!editMode || !drag.current) return
+    // Pointer-Delta (Bildschirm-px) → Buehnen-Koordinaten (Hub: Kamera-Scale 1).
+    const dx = (e.clientX - drag.current.startX) / fitScale
+    const dy = (e.clientY - drag.current.startY) / fitScale
+    onMoved(mod.id, {
+      x: Math.max(0, Math.min(DESIGN_W - CARD_W, drag.current.origX + dx)),
+      y: Math.max(0, Math.min(DESIGN_H - CARD_H, drag.current.origY + dy)),
+    })
+  }
+  function onPointerUp() {
+    if (drag.current) {
+      drag.current = null
+      onMoved(mod.id, pos, true) // persistieren
+    }
+  }
+
   return (
-    <div
-      className="hub-card-drift"
-      style={{ left: x, top: y, '--drift-dur': driftDur, '--drift-x': driftX, '--drift-y': driftY }}
-    >
+    <div className="hub-card-drift" style={{ left: pos.x, top: pos.y, ...driftStyle }}>
       <button
-        className="hub-card pressable tap"
-        style={{ transform: `rotate(${rot}deg)` }}
-        onClick={() => onOpen(mod.id)}
+        className={`hub-card tap ${editMode ? 'hub-card--edit' : ''}`}
+        style={{ transform: `rotate(${pos.rot}deg)` }}
+        onClick={() => !editMode && onOpen(mod.id)}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
       >
         <span className="hub-card__eyebrow-row">
           {mod.accentDot && <span className="dot dot--pulse" />}
@@ -96,8 +119,28 @@ function HubCard({ mod, index, onOpen }) {
 }
 
 // flightMode: 'camera' (Attract, 1.4s) | 'in' (Zoom ins Modul, 600ms) | 'out' (Rueckflug, 450ms)
-export default function RobbeversumStage({ focus, flightMode = 'camera', hubHidden, onOpenModule }) {
+export default function RobbeversumStage({ focus, flightMode = 'camera', hubHidden, editMode, onOpenModule }) {
   const fit = useStageFit()
+  const [layout, setLayout] = useState(getLayout)
+
+  // Effektive Position pro Modul: Config-Default + localStorage-Override.
+  const positions = Object.fromEntries(
+    modules.map((m) => [m.id, { ...m.hubPosition, ...(layout[m.id] || {}) }])
+  )
+
+  function focusToCamera(f) {
+    if (!f || f.type === 'overview') return { x: DESIGN_W / 2, y: DESIGN_H / 2, scale: 1 }
+    if (f.type === 'center') return { ...CENTER, scale: f.scale || 1.15 }
+    const p = positions[f.id]
+    if (!p) return { x: DESIGN_W / 2, y: DESIGN_H / 2, scale: 1 }
+    return { x: p.x + CARD_W / 2, y: p.y + CARD_H / 2, scale: f.scale || 1.9 }
+  }
+
+  function onCardMoved(id, pos, persist) {
+    setLayout((cur) => ({ ...cur, [id]: { x: pos.x, y: pos.y } }))
+    if (persist) saveLayoutPos(id, pos)
+  }
+
   const cam = focusToCamera(focus)
   const flightClass =
     flightMode === 'in' ? 'stage-camera--fly-in' : flightMode === 'out' ? 'stage-camera--fly-out' : ''
@@ -109,7 +152,7 @@ export default function RobbeversumStage({ focus, flightMode = 'camera', hubHidd
         style={{ left: fit.left, top: fit.top, transform: `scale(${fit.scale})` }}
       >
         <div className={`stage-camera ${flightClass}`} style={{ transform: cameraTransform(cam) }}>
-          <ConstellationLines />
+          <ConstellationLines positions={positions} />
           <div className="stage-center">
             <p className="eyebrow">{config.kontakt.firma}</p>
             <h1>
@@ -118,11 +161,25 @@ export default function RobbeversumStage({ focus, flightMode = 'camera', hubHidd
           </div>
           <div className={`hub-layer ${hubHidden ? 'hub-layer--hidden' : ''}`}>
             {modules.map((m, i) => (
-              <HubCard key={m.id} mod={m} index={i} onOpen={onOpenModule} />
+              <HubCard
+                key={m.id}
+                mod={m}
+                pos={positions[m.id]}
+                index={i}
+                editMode={editMode}
+                fitScale={fit.scale}
+                onOpen={onOpenModule}
+                onMoved={onCardMoved}
+              />
             ))}
           </div>
         </div>
       </div>
+      {editMode && (
+        <div className="layout-banner">
+          Layout-Modus: Karten ziehen und loslassen. Beenden über die Einstellungen (5× Logo).
+        </div>
+      )}
     </div>
   )
 }

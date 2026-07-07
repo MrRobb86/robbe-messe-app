@@ -94,7 +94,8 @@
   animation: attract-fade 600ms ease-out both;
 }
 
-/* CTA-Pill "Tippen zum Erkunden" — permanent im Attract-Mode. */
+/* CTA-Pill "Tippen zum Erkunden" — permanent im Attract-Mode.
+   Bewusst ROT (Kundenwunsch 07/2026): der eine praegnante Akzent des Loops. */
 .attract-pill {
   position: fixed;
   bottom: 100px;
@@ -106,18 +107,19 @@
   height: 84px;
   padding: 0 44px;
   border-radius: 42px;
-  background: var(--paper);
-  border: 1px solid var(--ink-200);
-  box-shadow: var(--shadow-md);
+  background: var(--accent);
+  border: none;
+  box-shadow: var(--shadow-lg);
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 30px;
-  color: var(--ink-900);
+  color: #fff;
   z-index: 31;
   pointer-events: none;
   animation: attract-pill-pulse 2s ease-in-out infinite;
 }
+.attract-pill .dot { background: #fff; }
 @keyframes attract-pill-pulse {
   0%, 100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.04); }
+  50% { transform: translateX(-50%) scale(1.05); }
 }

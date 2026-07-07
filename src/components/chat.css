@@ -106,17 +106,21 @@
   font-family: var(--font-mono);
 }
 
-/* ---------- Messe-Bot: Bubble + Side-Sheet ---------- */
+/* ---------- Messe-Bot: Bubble + Side-Sheet ----------
+   Optik wie der Website-Chatbot (robbe-chatbot.js): roter Kreis, weisses
+   Chat-Icon. Position UNTEN LINKS ueber dem Zurueck-Button — verdeckt so
+   weder Telefonnummer (rechts) noch den Zurueck-Button (links unten). */
 .bot-bubble {
   position: fixed;
-  bottom: 28px;
-  right: 36px;
+  bottom: 124px;
+  left: 36px;
   width: var(--bot-bubble);
   height: var(--bot-bubble);
   border-radius: 50%;
-  background: var(--paper);
-  border: 1px solid var(--ink-200);
-  box-shadow: var(--shadow-md);
+  background: var(--accent);
+  border: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  color: #fff;
   z-index: 50;
   display: flex;
   align-items: center;
@@ -124,22 +128,18 @@
   cursor: pointer;
   animation: breathe 3s ease-in-out infinite;
 }
-.bot-bubble img { width: 60px; }
-.bot-bubble .dot {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-}
+.bot-bubble svg { width: 48px; height: 48px; }
+.bot-bubble:active { transform: scale(1.06); }
 
 /* Proaktive Sprechblase am Bot. */
 .bot-teaser {
   position: fixed;
-  bottom: 150px;
-  right: 36px;
+  bottom: 246px;
+  left: 36px;
   max-width: 460px;
   background: var(--ink-900);
   color: var(--deck-ink);
-  border-radius: 20px 20px 4px 20px;
+  border-radius: 20px 20px 20px 4px;
   padding: 22px 28px;
   font-size: 24px;
   line-height: var(--lh-snug);

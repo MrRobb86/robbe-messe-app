@@ -87,6 +87,14 @@
   flex-direction: column;
   text-align: left;
   cursor: pointer;
+  transition: transform 140ms var(--ease-fly), box-shadow 140ms ease-out;
+}
+/* Beim Antippen kommt die Karte dem Besucher ENTGEGEN (Kundenwunsch):
+   waechst + hebt sich, bevor die Kamera hineinfliegt. */
+.hub-card:active {
+  transform: scale(1.06) !important; /* schlaegt die rotate()-Inline-Style */
+  box-shadow: var(--shadow-lg);
+  border-color: var(--ink-300);
 }
 .hub-card__title {
   margin: 6px 0 8px;
@@ -120,6 +128,28 @@
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+/* Layout-Modus: verschiebbare Karten. */
+.hub-card--edit {
+  border: 2px dashed var(--accent);
+  cursor: grab;
+  touch-action: none;
+}
+.hub-card--edit:active { cursor: grabbing; transform: none !important; }
+.layout-banner {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  z-index: 80;
+  zoom: var(--k, 1);
 }
 
 /* Hub blendet als Parallaxe weg, wenn ein Modul offen ist. */
