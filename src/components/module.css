@@ -1,0 +1,232 @@
+/* Modul-Ebene: Fullscreen-Layer ueber der Buehne. Erscheint gestaffelt,
+   waehrend die Kamera auf die Karte zufliegt. */
+
+.module-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink-50);
+  animation: module-in 450ms var(--ease-fly) 250ms both;
+}
+@keyframes module-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.module-layer--closing {
+  animation: module-out 300ms var(--ease-fly) both;
+}
+@keyframes module-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.94); }
+}
+
+.module-head {
+  /* Platz fuer die Logo-Zeile oben links — keine Ueberlappung. */
+  padding: 92px 48px 20px;
+  flex: none;
+}
+.module-head .eyebrow { margin-bottom: 10px; animation: rise-in 400ms var(--ease-fly) 350ms both; }
+.module-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-h1);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--lh-tight);
+  color: var(--ink-900);
+  animation: rise-in 400ms var(--ease-fly) 430ms both;
+}
+
+.module-body {
+  flex: 1;
+  min-height: 0;
+  padding: 0 48px 130px; /* Platz fuer den Zurueck-Button */
+  animation: rise-in 400ms var(--ease-fly) 510ms both;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Der allgegenwaertige Zurueck-Button: fix unten links, in jedem Modul
+   identisch — ein Button, ein Ort, eine Bedeutung. */
+.back-btn {
+  position: fixed;
+  bottom: 28px;
+  left: 36px;
+  z-index: 45;
+}
+.back-btn .dot { margin-right: 2px; }
+
+/* "Noch da?"-Overlay mit Countdown-Kreis. */
+.idle-warn {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(248, 247, 244, 0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+.idle-warn h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 72px;
+  color: var(--ink-900);
+}
+.idle-warn p { margin: 0; font-size: 30px; color: var(--ink-500); }
+.idle-warn__ring { transform: rotate(-90deg); }
+.idle-warn__ring circle {
+  fill: none;
+  stroke-width: 6;
+}
+.idle-warn__ring .bg { stroke: var(--ink-200); }
+.idle-warn__ring .fg {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+/* ---------- iframe im Demo-Rahmen ---------- */
+.frame-demo {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+.frame-demo__bar {
+  height: 64px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--ink-200);
+  background: var(--ink-100);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+.frame-demo__bar .dot { margin-right: 10px; }
+.frame-demo__reload {
+  border: none;
+  background: none;
+  font-size: 26px;
+  color: var(--ink-500);
+  cursor: pointer;
+  min-width: 64px;
+  min-height: 64px;
+}
+.frame-demo iframe {
+  flex: 1;
+  border: none;
+  width: 100%;
+}
+.frame-demo__fallback {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  padding: 48px;
+}
+.frame-demo__fallback h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 40px;
+  color: var(--ink-900);
+}
+.frame-demo__fallback p { margin: 0; font-size: 26px; color: var(--ink-500); max-width: 700px; }
+
+/* ---------- Content-Karten (Wie wir arbeiten / Copilot-Tour / Team) ---------- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 28px;
+  align-content: start;
+  overflow-y: auto;
+}
+.content-card {
+  background: var(--paper);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--r-xl);
+  padding: 36px 38px;
+  box-shadow: var(--shadow-sm);
+}
+.content-card h3 {
+  margin: 8px 0 14px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 36px;
+  line-height: var(--lh-tight);
+  color: var(--ink-900);
+}
+.content-card p { margin: 0; font-size: 24px; line-height: var(--lh-normal); color: var(--ink-500); }
+
+.team-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--r-lg);
+  margin-bottom: 20px;
+  background: var(--ink-100);
+}
+
+/* Copilot-Tour: grosse Schritte mit Weiter-Navigation. */
+.tour {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  text-align: center;
+}
+.tour__step { max-width: 1000px; }
+.tour__image {
+  width: min(900px, 70vw);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--ink-200);
+  background: var(--ink-100);
+  box-shadow: var(--shadow-md);
+}
+.tour__nav { display: flex; gap: 20px; align-items: center; }
+.tour__dots { display: flex; gap: 10px; }
+.tour__dots span {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--ink-300);
+}
+.tour__dots span.active { background: var(--accent); }
+
+/* ---------- QR-Block ---------- */
+.qr-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+.qr-block img {
+  width: 260px;
+  height: 260px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--ink-200);
+  background: var(--paper);
+  padding: 14px;
+}
+.qr-block p { margin: 0; font-size: 24px; color: var(--ink-500); }

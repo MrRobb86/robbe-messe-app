@@ -1,0 +1,62 @@
+/* Self-hosted Fonts (@fontsource, keine CDN-Calls — DSGVO).
+   Robbe-CI: Urbanist / Inter / IBM Plex Mono. */
+@import '@fontsource/urbanist/700.css';
+@import '@fontsource/urbanist/800.css';
+@import '@fontsource/urbanist/900.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink-700);
+  background: var(--ink-50);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden; /* Kiosk: die Buehne scrollt nie, nur innere Container */
+}
+
+button { font-family: inherit; }
+
+/* Sichtbarer Tastatur-Fokus (falls je eine Hardware-Tastatur haengt). */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mono { font-family: var(--font-mono); }
+
+/* Eyebrow — CI: mono, uppercase, Akzent. Kiosk-Groesse. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  margin: 0 0 6px;
+}
+
+.accent-em { color: var(--accent); font-style: normal; }
+
+/* Reduced Motion respektieren — Kiosk-Geraet ist eigenes Gerat, aber
+   die App bleibt auch ohne Animationen voll bedienbar. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

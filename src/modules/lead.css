@@ -1,0 +1,98 @@
+/* Kontakt-Modul: zwei grosse Karten — Termin buchen | Kontakt dalassen.
+   Der Lead ist eine Belohnung, keine Schranke. */
+
+.lead-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.lead-card {
+  background: var(--paper);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md);
+  padding: 40px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 0;
+  overflow-y: auto;
+}
+.lead-card h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 40px;
+  color: var(--ink-900);
+}
+.lead-card > p { margin: 0; font-size: 24px; color: var(--ink-500); }
+
+.lead-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lead-consent {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  cursor: pointer;
+  padding: 8px 0;
+}
+.lead-consent input {
+  width: 40px;
+  height: 40px;
+  margin: 2px 0 0;
+  accent-color: var(--accent);
+  flex: none;
+}
+.lead-consent span { font-size: 22px; line-height: var(--lh-snug); color: var(--ink-700); }
+
+.lead-phone {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  color: var(--ink-900);
+}
+
+.lead-thanks {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  text-align: center;
+}
+.lead-thanks h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 84px;
+  color: var(--ink-900);
+}
+.lead-thanks p { margin: 0; font-size: 30px; color: var(--ink-500); max-width: 800px; }
+
+.lead-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--ink-400);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+.lead-divider::before,
+.lead-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ink-200);
+}

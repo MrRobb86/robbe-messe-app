@@ -1,0 +1,123 @@
+/* Attract-Mode: Overlay-Ebene ueber der Buehne. Grosse Typo, wenige,
+   perfekt sitzende Bewegungen. */
+
+.attract-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px;
+  pointer-events: none; /* Touch geht durch — jeder Tap weckt den Kiosk */
+}
+
+.attract-scene {
+  animation: attract-fade 900ms ease-out both;
+  max-width: 1500px;
+}
+@keyframes attract-fade {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.attract-headline {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-attract-xl);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--ink-900);
+}
+.attract-headline .accent-em { color: var(--accent); }
+
+.attract-sub {
+  margin: 28px 0 0;
+  font-size: var(--fs-attract-sub);
+  color: var(--ink-500);
+  font-weight: 500;
+}
+
+/* Brand-Opener: Wortmarke setzt sich Buchstabe fuer Buchstabe. */
+.attract-letter {
+  display: inline-block;
+  animation: letter-up 500ms var(--ease-fly) both;
+}
+@keyframes letter-up {
+  from { opacity: 0; transform: translateY(0.35em); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Auto-Chat-Demo: grosse Chat-Karte mit tippendem Text. */
+.attract-chat {
+  margin-top: 48px;
+  width: min(1100px, 82vw);
+  background: var(--paper);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-md);
+  padding: 40px 48px;
+  text-align: left;
+}
+.attract-chat__q {
+  display: inline-block;
+  background: var(--ink-900);
+  color: var(--deck-ink);
+  border-radius: 18px 18px 4px 18px;
+  padding: 18px 26px;
+  font-size: 30px;
+  line-height: var(--lh-snug);
+  margin-bottom: 26px;
+}
+.attract-chat__a {
+  font-size: 30px;
+  line-height: var(--lh-normal);
+  color: var(--ink-700);
+  min-height: 4.6em;
+}
+.attract-caret {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background: var(--accent);
+  vertical-align: -0.15em;
+  margin-left: 4px;
+  animation: caret-blink 0.9s steps(1) infinite;
+}
+@keyframes caret-blink { 50% { opacity: 0; } }
+
+/* Worte-Szene: 4 grosse Worte wechseln durch. */
+.attract-word {
+  animation: attract-fade 600ms ease-out both;
+}
+
+/* CTA-Pill "Tippen zum Erkunden" — permanent im Attract-Mode. */
+.attract-pill {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 84px;
+  padding: 0 44px;
+  border-radius: 42px;
+  background: var(--paper);
+  border: 1px solid var(--ink-200);
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--ink-900);
+  z-index: 31;
+  pointer-events: none;
+  animation: attract-pill-pulse 2s ease-in-out infinite;
+}
+@keyframes attract-pill-pulse {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.04); }
+}

@@ -1,0 +1,195 @@
+/* Die Robbeversum-Buehne: Design-Flaeche 1920×1080, auf den Viewport gefittet.
+   Bewegung ausschliesslich ueber transform/opacity — 60fps auf Android. */
+
+.stage-viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--ink-50);
+}
+
+/* Fittet die Design-Flaeche in den realen Viewport (contain, zentriert). */
+.stage-fit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  /* transform kommt aus JS: translate(-50%,-50%)-Aequivalent + scale */
+}
+
+/* Die Kamera — das EINZIGE gross animierte Element. */
+.stage-camera {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  transition: transform var(--dur-camera) var(--ease-camera);
+  will-change: transform;
+}
+.stage-camera--fly-in { transition-duration: var(--dur-zoom-in); transition-timing-function: var(--ease-fly); }
+.stage-camera--fly-out { transition-duration: var(--dur-zoom-out); transition-timing-function: var(--ease-fly); }
+
+/* Haarlinien-Konstellation (statisches SVG unter den Karten). */
+.stage-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.stage-lines line {
+  stroke: var(--ink-200);
+  stroke-width: 1;
+}
+.stage-lines circle {
+  fill: var(--accent);
+}
+
+/* Zentrum: Wortmarke. */
+.stage-center {
+  position: absolute;
+  left: 960px;
+  top: 470px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+.stage-center h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 72px;
+  letter-spacing: var(--tracking-tight);
+  color: var(--ink-900);
+  line-height: var(--lh-tight);
+}
+.stage-center .eyebrow { margin-bottom: 12px; }
+
+/* ---------- Hub-Karten ---------- */
+.hub-card-drift {
+  position: absolute;
+  animation: card-drift var(--drift-dur, 11s) ease-in-out infinite alternate;
+}
+@keyframes card-drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(var(--drift-x, 6px), var(--drift-y, -8px)); }
+}
+
+.hub-card {
+  position: relative; /* Anker fuer die .tap-Hit-Area */
+  width: 400px;
+  height: 270px;
+  padding: 28px 30px;
+  background: var(--paper);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  cursor: pointer;
+}
+.hub-card__title {
+  margin: 6px 0 8px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 40px;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--ink-900);
+}
+.hub-card__teaser {
+  margin: 0;
+  font-size: 22px;
+  line-height: var(--lh-snug);
+  color: var(--ink-500);
+}
+.hub-card__arrow {
+  margin-top: auto;
+  align-self: flex-end;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid var(--ink-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: var(--ink-900);
+}
+.hub-card__eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Hub blendet als Parallaxe weg, wenn ein Modul offen ist. */
+.hub-layer {
+  position: absolute;
+  inset: 0;
+  transition: opacity 400ms ease-out;
+}
+.hub-layer--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Fortschritts-Konstellation (x von 7 entdeckt) oben rechts. */
+.progress-dots {
+  position: fixed;
+  top: 28px;
+  right: 36px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--ink-500);
+  z-index: 40;
+}
+.progress-dots__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink-300);
+  background: transparent;
+}
+.progress-dots__dot--filled {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Logo oben links (+ Admin-Geste). */
+.stage-logo {
+  position: fixed;
+  top: 24px;
+  left: 36px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 40;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.stage-logo img { height: 44px; }
+.stage-logo span {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+/* Telefonnummer unten rechts — permanent, auch fuer Vorbeigeher. */
+.stage-phone {
+  position: fixed;
+  bottom: 28px;
+  right: 36px;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--ink-700);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
