@@ -45,8 +45,10 @@ export const modules = [
     hubPosition: { x: 210, y: 620, rot: 1.2 },
     botTeaser: 'Frag mich, wie der RoboAI Copilot in deinem Team arbeitet.',
     payload: {
-      // Geführte Tour: Screens/Storyline. tryUrl = Demo-Instanz (Entscheidung W4).
-      tryUrl: '',
+      // Geführte Tour: Screens/Storyline. tryUrl = Live-Instanz (ai.tool.center
+      // sendet keine frame-ancestors-Header → einbettbar). Offen: Demo-User
+      // ohne Login, sonst sehen Besucher nur den Login-Screen.
+      tryUrl: 'https://robbe-consulting.ai.tool.center/library/apps',
       steps: [
         {
           title: 'Ein Portal, alle KI-Agenten',

@@ -26,9 +26,9 @@ export const fairConfig = {
   },
 
   openwebui: {
-    baseUrl: import.meta.env.VITE_OPENWEBUI_URL || '',
+    baseUrl: import.meta.env.VITE_OPENWEBUI_URL || 'https://ki.robbe-consulting.de',
     apiKey: import.meta.env.VITE_OWUI_KIOSK_KEY || '',
-    model: import.meta.env.VITE_OWUI_MODEL || 'robbe-unternehmenswissen',
+    model: import.meta.env.VITE_OWUI_MODEL || 'robbe-unternehmenswissen', // TODO: echte Workspace-Modell-ID
   },
 
   webhooks: {
