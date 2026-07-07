@@ -6,9 +6,12 @@
 // Hochformat 1080×1920 (automatisches 2-Spalten-Raster). Beide Layouts sind
 // per Drag anpassbar und werden getrennt in localStorage gespeichert.
 //
-// Karten verschieben: LANGER Druck (500 ms) auf eine Karte hebt sie an,
-// dann ziehen. Kurzer Tap oeffnet das Modul. Im Layout-Modus der
-// Einstellungen startet der Drag sofort.
+// Karten verschieben: einfach ANPACKEN und ziehen — ab ~12 px Bewegung wird
+// aus dem Tap ein Drag (Tap ohne Bewegung oeffnet das Modul). Besucher duerfen
+// frei schieben; DAUERHAFT gespeichert wird nur im Layout-Modus der
+// Einstellungen. Beim Session-Reset ordnet sich das RobbeVersum wieder.
+// Beim Loslassen stossen sich Karten ab: keine Ueberlappungen, das Zentrum
+// (Wortmarke) bleibt frei.
 import { useEffect, useRef, useState } from 'react'
 import { modules, config } from '../config/index.js'
 import { getLayout, saveLayoutPos } from '../kiosk/settings.js'
@@ -16,8 +19,11 @@ import './stage.css'
 
 const CARD_W = 400
 const CARD_H = 270
-const LONG_PRESS_MS = 500
-const DRAG_START_TOLERANCE = 14 // px Bewegung, ab der ein "pending" Long-Press zum Tap wird
+const DRAG_START_PX = 12 // ab dieser Bewegung wird der Tap zum Drag
+// Mindestabstand beim Abstossen: muss GROESSER sein als der maximale
+// kombinierte Schwebe-Drift zweier Karten (2×14px), sonst beruehren sie
+// sich beim Schweben wieder.
+const GAP = 36
 
 const DIMS = {
   landscape: { w: 1920, h: 1080, center: { x: 960, y: 470 } },
@@ -75,34 +81,25 @@ function HubCard({ mod, pos, index, editMode, fit, dims, onOpen, onMoved }) {
   const drag = useRef(null)
   const [dragging, setDragging] = useState(false)
 
-  const driftStyle =
-    editMode || dragging
-      ? { animation: 'none' }
-      : {
-          '--drift-dur': `${9 + (index % 6)}s`,
-          '--drift-x': `${(index % 3) * 4 - 4}px`,
-          '--drift-y': `${(index % 4) * 4 - 8}px`,
-        }
-
-  function beginDrag() {
-    if (drag.current) {
-      drag.current.mode = 'drag'
-      setDragging(true)
-    }
-  }
+  // Sichtbares Schweben: pro Karte eigene Amplitude/Dauer (transform-only,
+  // 60fps). Waehrend des Ziehens aus, sonst "zittert" die Karte am Finger.
+  const driftStyle = dragging
+    ? { animation: 'none', transition: 'none' }
+    : {
+        '--drift-dur': `${7 + (index % 5)}s`,
+        '--drift-x': `${((index * 7) % 3) * 12 - 12}px`,
+        '--drift-y': `${((index * 5) % 3) * 14 - 14}px`,
+      }
 
   function onPointerDown(e) {
     e.currentTarget.setPointerCapture(e.pointerId)
     drag.current = {
-      mode: editMode ? 'drag' : 'pending',
-      timer: editMode ? null : setTimeout(beginDrag, LONG_PRESS_MS),
+      mode: 'pending',
       startX: e.clientX,
       startY: e.clientY,
       origX: pos.x,
       origY: pos.y,
-      draggedFar: false,
     }
-    if (editMode) setDragging(true)
   }
 
   function onPointerMove(e) {
@@ -110,15 +107,12 @@ function HubCard({ mod, pos, index, editMode, fit, dims, onOpen, onMoved }) {
     if (!d) return
     const dx = e.clientX - d.startX
     const dy = e.clientY - d.startY
+    // Ab der Bewegungsschwelle wird aus dem Tap ein freies Ziehen.
     if (d.mode === 'pending') {
-      // Vor Ablauf des Long-Press bewegt → normaler Tap, kein Drag.
-      if (Math.hypot(dx, dy) > DRAG_START_TOLERANCE) {
-        clearTimeout(d.timer)
-        drag.current = null
-      }
-      return
+      if (Math.hypot(dx, dy) < DRAG_START_PX) return
+      d.mode = 'drag'
+      setDragging(true)
     }
-    d.draggedFar = d.draggedFar || Math.hypot(dx, dy) > 6
     // Letzte Position im Ref merken — die pos-Prop hinkt beim schnellen
     // Loslassen einen Render hinterher (sonst wird der Drag "zurueckgesetzt").
     d.lastPos = {
@@ -131,11 +125,11 @@ function HubCard({ mod, pos, index, editMode, fit, dims, onOpen, onMoved }) {
   function onPointerUp() {
     const d = drag.current
     if (!d) return
-    clearTimeout(d.timer)
     if (d.mode === 'drag') {
-      onMoved(mod.id, d.lastPos || pos, true) // persistieren
+      // Abstossen/Platztausch + ggf. speichern; origin = frei gewordener Platz.
+      onMoved(mod.id, d.lastPos || pos, { origin: { x: d.origX, y: d.origY } })
       // Klick nach Drag unterdruecken (click feuert nach pointerup).
-      drag.current = { suppressClick: d.draggedFar }
+      drag.current = { suppressClick: true }
       setDragging(false)
       setTimeout(() => (drag.current = null), 250)
     } else {
@@ -144,7 +138,7 @@ function HubCard({ mod, pos, index, editMode, fit, dims, onOpen, onMoved }) {
   }
 
   function onClick() {
-    if (drag.current?.suppressClick || dragging || editMode) return
+    if (drag.current?.suppressClick || dragging) return
     onOpen(mod.id)
   }
 
@@ -171,8 +165,88 @@ function HubCard({ mod, pos, index, editMode, fit, dims, onOpen, onMoved }) {
   )
 }
 
+// Abstossen beim Loslassen: Karte wird aus Ueberlappungen mit anderen Karten
+// und der Zentrum-Zone (Wortmarke) herausgedrueckt — entlang der Achse der
+// geringsten Eindringtiefe, iterativ, damit Kettenkollisionen aufgehen.
+function resolveCollisions(id, pos, positions, dims) {
+  const p = { ...pos }
+  const centerZone = {
+    x: dims.center.x - 320,
+    y: dims.center.y - 100,
+    w: 640,
+    h: 200,
+  }
+  const obstacles = [
+    ...Object.entries(positions)
+      .filter(([oid]) => oid !== id)
+      .map(([, o]) => ({ x: o.x, y: o.y, w: CARD_W, h: CARD_H })),
+    centerZone,
+  ]
+  for (let i = 0; i < 24; i++) {
+    let pushed = false
+    for (const o of obstacles) {
+      const overlapX = Math.min(p.x + CARD_W + GAP, o.x + o.w + GAP) - Math.max(p.x - GAP, o.x - GAP)
+      const overlapY = Math.min(p.y + CARD_H + GAP, o.y + o.h + GAP) - Math.max(p.y - GAP, o.y - GAP)
+      if (overlapX > 0 && overlapY > 0) {
+        // Entlang der Achse mit der geringsten Ueberlappung herausschieben.
+        // Blockiert der Buehnenrand die Richtung, in die Gegenrichtung
+        // ausweichen — sonst klemmt die Karte am Rand fest (Endlos-Patt).
+        if (overlapX < overlapY) {
+          const dir = p.x + CARD_W / 2 < o.x + o.w / 2 ? -1 : 1
+          const nx = p.x + dir * overlapX
+          p.x = nx < 0 || nx > dims.w - CARD_W ? p.x - dir * overlapX : nx
+        } else {
+          const dir = p.y + CARD_H / 2 < o.y + o.h / 2 ? -1 : 1
+          const ny = p.y + dir * overlapY
+          p.y = ny < 0 || ny > dims.h - CARD_H ? p.y - dir * overlapY : ny
+        }
+        pushed = true
+      }
+    }
+    p.x = Math.max(0, Math.min(dims.w - CARD_W, p.x))
+    p.y = Math.max(0, Math.min(dims.h - CARD_H, p.y))
+    if (!pushed) break
+  }
+
+  // Konvergiert das Schieben nicht (lokales Minimum, z. B. volle Spalte am
+  // Rand): Rastersuche nach der naechstgelegenen wirklich freien Position.
+  const isFree = (q) =>
+    obstacles.every(
+      (o) =>
+        q.x + CARD_W + GAP <= o.x || o.x + o.w + GAP <= q.x || q.y + CARD_H + GAP <= o.y || o.y + o.h + GAP <= q.y
+    )
+  if (!isFree(p)) {
+    let best = null
+    for (let gx = 0; gx <= dims.w - CARD_W; gx += 40) {
+      for (let gy = 0; gy <= dims.h - CARD_H; gy += 40) {
+        const q = { x: gx, y: gy }
+        if (!isFree(q)) continue
+        const d = (gx - pos.x) ** 2 + (gy - pos.y) ** 2
+        if (!best || d < best.d) best = { ...q, d }
+      }
+    }
+    if (best) return { x: best.x, y: best.y, resolved: true }
+    // Buehne ist voll — kein freier Platz. Aufrufer macht einen Platztausch.
+    return { ...p, resolved: false }
+  }
+  return { ...p, resolved: true }
+}
+
+// Karte, die am Drop-Punkt am staerksten ueberlappt wird (fuer Platztausch).
+function mostOverlappedCard(id, pos, positions) {
+  let best = null
+  for (const [oid, o] of Object.entries(positions)) {
+    if (oid === id) continue
+    const ox = Math.min(pos.x + CARD_W, o.x + CARD_W) - Math.max(pos.x, o.x)
+    const oy = Math.min(pos.y + CARD_H, o.y + CARD_H) - Math.max(pos.y, o.y)
+    const area = Math.max(0, ox) * Math.max(0, oy)
+    if (area > 0 && (!best || area > best.area)) best = { id: oid, area }
+  }
+  return best?.id || null
+}
+
 // flightMode: 'camera' (Attract, 1.4s) | 'in' (Zoom ins Modul, 600ms) | 'out' (Rueckflug, 450ms)
-export default function RobbeversumStage({ focus, flightMode = 'camera', hubHidden, editMode, onOpenModule }) {
+export default function RobbeversumStage({ focus, flightMode = 'camera', hubHidden, editMode, sessionId, onOpenModule }) {
   const fit = useStageFit()
   const dims = DIMS[fit.orientation]
   const [layouts, setLayouts] = useState(() => ({
@@ -180,6 +254,12 @@ export default function RobbeversumStage({ focus, flightMode = 'camera', hubHidd
     portrait: getLayout('portrait'),
   }))
   const layout = layouts[fit.orientation]
+
+  // Session-Reset: Besucher-Verschiebungen verwerfen, gespeicherte
+  // (bzw. Standard-)Konstellation wiederherstellen.
+  useEffect(() => {
+    setLayouts({ landscape: getLayout('landscape'), portrait: getLayout('portrait') })
+  }, [sessionId])
 
   // Effektive Position: Ausrichtungs-Default + gespeicherter Override.
   const positions = Object.fromEntries(
@@ -197,12 +277,38 @@ export default function RobbeversumStage({ focus, flightMode = 'camera', hubHidd
     return { x: p.x + CARD_W / 2, y: p.y + CARD_H / 2, scale: f.scale || 1.9 }
   }
 
-  function onCardMoved(id, pos, persist) {
+  function onCardMoved(id, pos, release) {
+    if (!release) {
+      setLayouts((cur) => ({
+        ...cur,
+        [fit.orientation]: { ...cur[fit.orientation], [id]: { x: pos.x, y: pos.y } },
+      }))
+      return
+    }
+    // Loslassen: aus Ueberlappungen herausdruecken. Findet sich auf der
+    // vollen Buehne kein freier Platz → Platztausch mit der getroffenen
+    // Karte (wie beim App-Icons-Sortieren): sie weicht auf den frei
+    // gewordenen Ursprungsplatz aus.
+    const updates = {}
+    const resolved = resolveCollisions(id, pos, positions, dims)
+    if (resolved.resolved) {
+      updates[id] = { x: resolved.x, y: resolved.y }
+    } else {
+      const hitId = mostOverlappedCard(id, pos, positions)
+      if (hitId && release.origin) {
+        updates[id] = { x: positions[hitId].x, y: positions[hitId].y }
+        updates[hitId] = { x: release.origin.x, y: release.origin.y }
+      } else {
+        updates[id] = { x: release.origin?.x ?? resolved.x, y: release.origin?.y ?? resolved.y }
+      }
+    }
     setLayouts((cur) => ({
       ...cur,
-      [fit.orientation]: { ...cur[fit.orientation], [id]: { x: pos.x, y: pos.y } },
+      [fit.orientation]: { ...cur[fit.orientation], ...updates },
     }))
-    if (persist) saveLayoutPos(id, pos, fit.orientation)
+    // DAUERHAFT speichern nur im Layout-Modus — Besucher-Schiebereien sind
+    // temporaer und enden mit dem Session-Reset.
+    if (editMode) for (const [uid, upos] of Object.entries(updates)) saveLayoutPos(uid, upos, fit.orientation)
   }
 
   const cam = focusToCamera(focus)

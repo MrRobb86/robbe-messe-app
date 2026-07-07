@@ -42,7 +42,7 @@ export const modules = [
     eyebrow: '03 — PRODUKT',
     title: 'Robbe AI-Copilot',
     teaser: 'Das KI-Portal für dein Team — ausprobieren erlaubt.',
-    hubPosition: { x: 230, y: 680, rot: 1.2 },
+    hubPosition: { x: 230, y: 720, rot: 1.2 },
     botTeaser: 'Frag mich, wie der Robbe AI-Copilot in deinem Team arbeitet.',
     payload: {
       // Ausfuehrliche Portal-Beschreibung + "Zum Portal"-Button.
@@ -80,7 +80,7 @@ export const modules = [
     eyebrow: '04 — IM EINSATZ',
     title: 'Chatbot im Einsatz',
     teaser: 'So arbeitet unser Website-Chatbot — gerade jetzt, live.',
-    hubPosition: { x: 760, y: 140, rot: -0.8 },
+    hubPosition: { x: 760, y: 90, rot: -0.8 },
     botTeaser: 'Frag mich, was so ein Chatbot für deine Website kostet.',
     payload: {
       backend: 'n8n',
@@ -101,7 +101,7 @@ export const modules = [
     eyebrow: '05 — SO ARBEITEN WIR',
     title: 'Wie wir arbeiten',
     teaser: 'Unser 12-Schritte-Plan — von der Analyse bis zur Verankerung.',
-    hubPosition: { x: 1330, y: 590, rot: -1.4 },
+    hubPosition: { x: 1330, y: 730, rot: -1.4 },
     botTeaser: 'Frag mich, wie unser 12-Schritte-Plan bei euch ablaufen würde.',
     payload: {
       // Der 12-Schritte-Plan von robbe-consulting.de/ki-beratung (Stand 07/2026).
@@ -127,7 +127,7 @@ export const modules = [
     eyebrow: '06 — LEISTUNGEN',
     title: 'Was wir anbieten',
     teaser: 'Von KI-Beratung bis Telefonagent — acht Wege zu deinem Vorsprung.',
-    hubPosition: { x: 110, y: 380, rot: 1.4 },
+    hubPosition: { x: 110, y: 410, rot: 1.4 },
     botTeaser: 'Frag mich, welches Angebot zu deinem Unternehmen passt.',
     payload: {
       // Leistungen von robbe-consulting.de (Stand 07/2026).
@@ -149,7 +149,7 @@ export const modules = [
     eyebrow: '07 — MENSCHEN',
     title: 'Das Team',
     teaser: 'Menschen, keine Buzzwords.',
-    hubPosition: { x: 800, y: 660, rot: 0.9 },
+    hubPosition: { x: 790, y: 700, rot: 0.9 },
     botTeaser: 'Frag mich, wer hinter Robbe Consulting steckt.',
     payload: {
       members: [
@@ -174,7 +174,7 @@ export const modules = [
     eyebrow: 'TERMIN & KONTAKT',
     title: 'Sprechen wir!',
     teaser: 'Termin buchen oder Kontakt dalassen — 30 Sekunden.',
-    hubPosition: { x: 1480, y: 395, rot: 0 },
+    hubPosition: { x: 1480, y: 420, rot: 0 },
     accentDot: true, // einzige Karte mit permanentem Puls-Punkt
     botTeaser: null, // im Kontakt-Modul schweigt der Bot
     payload: {},

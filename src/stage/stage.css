@@ -61,11 +61,14 @@
 /* ---------- Hub-Karten ---------- */
 .hub-card-drift {
   position: absolute;
-  animation: card-drift var(--drift-dur, 11s) ease-in-out infinite alternate;
+  animation: card-drift var(--drift-dur, 9s) ease-in-out infinite alternate;
+  /* Sanftes Andocken nach dem Loslassen/Abstossen (waehrend des Ziehens
+     per Inline-Style deaktiviert, sonst haengt die Karte dem Finger nach). */
+  transition: left 300ms var(--ease-fly), top 300ms var(--ease-fly);
 }
 @keyframes card-drift {
-  from { transform: translate(0, 0); }
-  to   { transform: translate(var(--drift-x, 6px), var(--drift-y, -8px)); }
+  from { transform: translate(calc(var(--drift-x, 12px) * -0.5), calc(var(--drift-y, -14px) * -0.5)); }
+  to   { transform: translate(var(--drift-x, 12px), var(--drift-y, -14px)); }
 }
 
 .hub-card {

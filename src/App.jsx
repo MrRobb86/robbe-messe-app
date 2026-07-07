@@ -128,6 +128,7 @@ function Kiosk() {
         flightMode={flightMode}
         hubHidden={mode === 'module'}
         editMode={layoutEdit && mode === 'hub'}
+        sessionId={sessionId}
         onOpenModule={openModule}
       />
 
