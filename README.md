@@ -43,11 +43,17 @@ npm run build    # dist/ → per rsync hinter nginx deployen
 
 ## Vor der Messe (Checkliste)
 
-- [ ] Echte QR-Codes generieren (Termin-URL, vCard) → `public/fairs/<fairId>/`
-- [ ] Telefonnummer + Termin-URL in fair.config.js eintragen
-- [ ] Team-Fotos + Copilot-Screens hinterlegen
-- [ ] n8n-Workflows: `messe-bot` (VOM-FASS-Kopie) und `messe-lead` (Odoo + Danke-Mail) anlegen
-- [ ] OWUI-Kiosk-User + API-Key anlegen, `streamChat` testen
-- [ ] nginx auf robbe-consulting.de: `frame-ancestors` für die Messe-Subdomain
-- [ ] Fully Kiosk: URL-Whitelist, Keep Screen On, Screensaver AUS, PIN, Scheduled Reload 04:00
-- [ ] 48h-Dauerlauf + Netzabriss-Test auf dem Zielgerät
+- [x] Echte QR-Codes (Termin + vCard) → `public/fairs/default/`
+- [x] Telefonnummer + Termin-URL in fair.config.js
+- [x] Website erlaubt Einbettung (`frame-ancestors`, seit 07/2026 live)
+- [x] n8n-Workflow `messe-lead` gebaut → `n8n/messe-lead.workflow.json` + `n8n/ANLEITUNG.md`
+- [ ] `messe-lead` in n8n importieren, Credentials (Odoo/SMTP/OpenAI) zuordnen, aktivieren, testen
+- [ ] n8n-Workflow `messe-bot` (VOM-FASS-Kopie mit Robbe-Wissen) anlegen
+- [ ] OWUI-Kiosk-User + API-Key anlegen (`VITE_OWUI_KIOSK_KEY`), Modell-ID prüfen, `streamChat` testen
+- [ ] Foto Ghiath (`public/fairs/default/team-ghiath.png`)
+- [ ] Deployment: Subdomain messe.robbe-consulting.de hinter nginx
+- [ ] Fully Kiosk: URL-Whitelist (inkl. ai.tool.center, calendar.google.com), Keep Screen On,
+      Screensaver AUS, PIN, Scheduled Reload 04:00, **Kamera-Permission erlauben** (Visitenkarten-Scan),
+      **Cookies NICHT automatisch löschen** (Copilot-Login vom Morgen muss den Tag überleben)
+- [ ] Morgens am Stand: einmal im Robbe AI-Copilot einloggen (Session hält per Cookie)
+- [ ] 48h-Dauerlauf + Netzabriss-Test + Kamera-Test auf dem Zielgerät
