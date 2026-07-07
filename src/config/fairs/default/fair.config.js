@@ -12,7 +12,7 @@ export const fairConfig = {
   kontakt: {
     name: 'Florian Robbe',
     firma: 'Robbe Sales & AI Consulting',
-    telefon: '+49 000 0000000', // TODO: echte Nummer eintragen
+    telefon: '+49 156 79659650',
     email: 'florian.robbe@robbe-consulting.de',
   },
 
