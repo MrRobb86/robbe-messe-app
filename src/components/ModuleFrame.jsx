@@ -16,7 +16,7 @@ export default function ModuleFrame({ mod, closing, onBack, children, hideTitle 
       </div>
       <button className="pill pressable back-btn" onClick={onBack}>
         <span className="dot" />
-        ← Zurück ins Robbeversum
+        ← Zurück ins RobbeVersum
       </button>
     </>
   )

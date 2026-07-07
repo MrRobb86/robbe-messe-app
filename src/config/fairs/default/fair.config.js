@@ -39,7 +39,12 @@ export const fairConfig = {
 
   urls: {
     website: 'https://robbe-consulting.de/',
-    termin: 'https://calendar.app.google/CfdmPcBowRim2uJe7', // Google-Terminplanung (wie Website)
+    // Kurzlink fuer QR-Codes und Mails:
+    termin: 'https://calendar.app.google/CfdmPcBowRim2uJe7',
+    // Embed-Variante (?gv=true) — die EINZIGE iframe-taugliche Form der
+    // Google-Terminplanung (der Kurzlink sendet X-Frame-Options: SAMEORIGIN):
+    terminEmbed:
+      'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0elpL4bi_B8E0NUfKs7Wm4gKjbzNL9CXYd2dAtygXGrJRORzjV1G67-qmSUUsxR_2FFuVeWTVW?gv=true',
     datenschutz: 'https://robbe-consulting.de/datenschutz',
   },
 

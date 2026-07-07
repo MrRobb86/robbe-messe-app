@@ -62,6 +62,13 @@ Android-Display (Fully Kiosk)
 - Chat: `POST {type:"message", sessionId, message, history, page, startedAt}` → `{reply}`
 - Ende: `POST {type:"end", sessionId, transcript, startedAt, endedAt, durationSeconds}` — n8n wertet Transkripte als Lead-Hinweise aus
 - Lead: `POST {type:"lead", leadId(UUID!), name, firma, email, telefon, interesse[], consent, consentText, consentVersion, consentAt, source:"messe-kiosk", messe, createdAt, queuedOffline}` → `{ok:true}`. **leadId clientseitig = Idempotenz** beim Nachsenden aus der Offline-Queue.
+- Visitenkarte: `POST {type:"card", leadId, images:{front, back?} (JPEG-dataURLs, max 1280px), interesse[], consent…, source, messe, createdAt}` → `{ok:true}`. n8n-Seite: Vision-Modell liest die Karte → Odoo-Lead + Mail an Florian („Vielen Dank"-Screen zeigt die App selbst).
+
+**Terminbuchung im iframe:** Der Kurzlink `calendar.app.google/…` sendet
+`X-Frame-Options: SAMEORIGIN` und ist NICHT einbettbar (ergab ein leeres weißes
+Feld). Einbettbar ist NUR die offizielle Embed-Form
+`calendar.google.com/calendar/appointments/schedules/<ID>?gv=true`
+(`urls.terminEmbed` in der Config). Der Kurzlink bleibt für QR-Codes und Mails.
 
 ## 4. Entscheidungen und ihre Begründungen
 
@@ -113,9 +120,17 @@ Android-Display (Fully Kiosk)
 1. **n8n-Workflows anlegen:** `messe-bot` (VOM-FASS-Kopie mit Robbe-Wissen) und
    `messe-lead` (Consent-Check → Dedup über leadId → Data-Table-Backup → Odoo
    crm.lead per JSON-RPC → Danke-Mail mit Kontaktdaten + Buchungslink → Respond).
+   NEU: Zweig für `type:"card"` (Visitenkarten-Scan) — Vision-Modell extrahiert
+   Name/Firma/Kontakt aus den Bildern → Odoo-Lead + Mail an Florian.
 2. **OWUI-Kiosk-User** anlegen (keine Adminrechte, nur ein Modell), API-Key in
    `.env` (`VITE_OWUI_KIOSK_KEY`), echte Modell-ID eintragen, Streaming live testen.
-3. **Copilot-Demo-Zugang:** Demo-User ohne Login bei aven8/tool.center klären.
+3. **Copilot-Demo-Zugang:** Auto-Login in die fremdgehostete Instanz
+   (aven8/tool.center) ist aus der App heraus NICHT möglich (Cross-Origin —
+   wir können in deren Login-Formular nichts eintragen). Realistische Wege:
+   (a) Anbieter nach Demo-User/Magic-Link-URL fragen (dann als `portalUrl`
+   eintragen), (b) morgens am Stand einmal einloggen — die Session lebt im
+   WebView-Cookie weiter (Fully Kiosk: Cookies NICHT automatisch löschen
+   lassen; nächtlicher App-Reload loggt nicht aus). Testen!
 4. **Deployment:** Subdomain messe.robbe-consulting.de + nginx auf dem Hostinger-Server.
 5. **Assets:** Foto Ghiath (`team-ghiath.png`), Terminlink-Diskrepanz klären.
 6. **Gerätetest:** Android-Panel + Fully Kiosk (Profil laut README), 48h-Dauerlauf,

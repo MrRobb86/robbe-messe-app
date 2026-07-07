@@ -71,8 +71,17 @@ function Portal({ payload }) {
       </div>
       {payload.portalUrl && (
         <button
-          className="pill pill--primary pressable"
-          style={{ alignSelf: 'flex-start' }}
+          className="pill pressable"
+          style={{
+            alignSelf: 'center',
+            height: 100,
+            padding: '0 64px',
+            fontSize: 36,
+            fontWeight: 800,
+            color: 'var(--accent)',
+            border: '2px solid var(--accent)',
+            borderRadius: 50,
+          }}
           onClick={() => setLive(true)}
         >
           Zum Portal →

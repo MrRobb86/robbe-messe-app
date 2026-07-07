@@ -10,6 +10,7 @@ import { config } from '../config/index.js'
 import { newLeadId, submitLead } from '../kiosk/leadQueue.js'
 import { effective } from '../kiosk/settings.js'
 import { useKiosk } from '../kiosk/KioskSession.jsx'
+import CardScan from './CardScan.jsx'
 import './lead.css'
 
 const INTERESTS = ['Schulung', 'Strategie-Workshop', 'Chatbot', 'Automatisierung', 'Unternehmens-KI']
@@ -22,6 +23,8 @@ export default function LeadModule() {
   const [consent, setConsent] = useState(false)
   const [sent, setSent] = useState(false)
   const [busy, setBusy] = useState(false)
+  const [calendarOpen, setCalendarOpen] = useState(false)
+  const [scanning, setScanning] = useState(false)
 
   // Nach dem Danke-Screen automatisch zurueck ins Robbeversum.
   useEffect(() => {
@@ -75,19 +78,40 @@ export default function LeadModule() {
     )
   }
 
+  if (scanning) {
+    return <CardScan onDone={goHub} onCancel={() => setScanning(false)} />
+  }
+
   return (
     <div className="lead-grid">
+      {calendarOpen && (
+        <div className="calendar-overlay">
+          <div className="frame-demo" style={{ flex: 1 }}>
+            <div className="frame-demo__bar">
+              <span>
+                <span className="dot" />
+                TERMIN MIT {config.kontakt.name.toUpperCase()} BUCHEN
+              </span>
+              <button
+                className="frame-demo__reload"
+                aria-label="Schließen"
+                onClick={() => setCalendarOpen(false)}
+              >
+                ×
+              </button>
+            </div>
+            <iframe src={config.urls.terminEmbed} title="Google-Buchungskalender" />
+          </div>
+        </div>
+      )}
+
       <div className="lead-card">
         <p className="eyebrow">DER SCHNELLSTE WEG</p>
         <h3>Termin buchen</h3>
         <p>Such dir direkt einen Termin mit {config.kontakt.name} aus — 30 Minuten, kostenlos.</p>
-        {effective(config).terminUrl ? (
-          <iframe
-            src={effective(config).terminUrl}
-            title="Terminbuchung"
-            style={{ flex: 1, minHeight: 320, border: '1px solid var(--ink-200)', borderRadius: 'var(--r-lg)' }}
-          />
-        ) : null}
+        <button className="pill pressable lead-red-cta" onClick={() => setCalendarOpen(true)}>
+          Buchungskalender öffnen →
+        </button>
         <div className="lead-divider">Lieber aufs Handy?</div>
         <div className="qr-block">
           <img src={config.qr.termin} alt="Termin-QR-Code" />
@@ -102,7 +126,10 @@ export default function LeadModule() {
       <div className="lead-card">
         <p className="eyebrow">ODER GANZ UNVERBINDLICH</p>
         <h3>Kontakt dalassen</h3>
-        <p>Wir melden uns nach der Messe — mit Infos zu genau deinem Thema.</p>
+        <button className="pill pressable lead-red-cta" onClick={() => setScanning(true)}>
+          📇 Visitenkarte scannen
+        </button>
+        <div className="lead-divider">oder eintippen</div>
         <form className="lead-form" onSubmit={onSubmit}>
           <input
             className="field"

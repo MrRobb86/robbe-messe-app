@@ -39,24 +39,29 @@ export function effective(config) {
 }
 
 // ---------- Hub-Layout (verschobene Karten) ----------
-export function getLayout() {
+// Getrennt pro Ausrichtung: Quer- und Hochformat haben eigene Konstellationen.
+const LAYOUT_KEY_PORTRAIT = 'rq_layout_portrait'
+const keyFor = (orientation) => (orientation === 'portrait' ? LAYOUT_KEY_PORTRAIT : LAYOUT_KEY)
+
+export function getLayout(orientation = 'landscape') {
   try {
-    return JSON.parse(localStorage.getItem(LAYOUT_KEY)) || {}
+    return JSON.parse(localStorage.getItem(keyFor(orientation))) || {}
   } catch {
     return {}
   }
 }
 
-export function saveLayoutPos(moduleId, pos) {
-  const layout = getLayout()
+export function saveLayoutPos(moduleId, pos, orientation = 'landscape') {
+  const layout = getLayout(orientation)
   layout[moduleId] = { x: Math.round(pos.x), y: Math.round(pos.y) }
-  localStorage.setItem(LAYOUT_KEY, JSON.stringify(layout))
+  localStorage.setItem(keyFor(orientation), JSON.stringify(layout))
   return layout
 }
 
 export function resetLayout() {
   localStorage.removeItem(LAYOUT_KEY)
+  localStorage.removeItem(LAYOUT_KEY_PORTRAIT)
   return {}
 }
 
-export const PERSISTENT_KEYS = ['rq_lead_queue', SETTINGS_KEY, LAYOUT_KEY]
+export const PERSISTENT_KEYS = ['rq_lead_queue', SETTINGS_KEY, LAYOUT_KEY, LAYOUT_KEY_PORTRAIT]

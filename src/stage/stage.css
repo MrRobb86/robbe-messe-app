@@ -8,15 +8,11 @@
   background: var(--ink-50);
 }
 
-/* Fittet die Design-Flaeche in den realen Viewport (contain, zentriert). */
+/* Fittet die Design-Flaeche in den realen Viewport (contain, zentriert).
+   Groesse/Position kommen aus JS — Quer: 1920×1080, Hoch: 1080×1920. */
 .stage-fit {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 1920px;
-  height: 1080px;
   transform-origin: 0 0;
-  /* transform kommt aus JS: translate(-50%,-50%)-Aequivalent + scale */
 }
 
 /* Die Kamera — das EINZIGE gross animierte Element. */
@@ -44,11 +40,9 @@
   fill: var(--accent);
 }
 
-/* Zentrum: Wortmarke. */
+/* Zentrum: Wortmarke (left/top aus JS — je Ausrichtung). */
 .stage-center {
   position: absolute;
-  left: 960px;
-  top: 470px;
   transform: translate(-50%, -50%);
   text-align: center;
   pointer-events: none;
@@ -89,12 +83,23 @@
   cursor: pointer;
   transition: transform 140ms var(--ease-fly), box-shadow 140ms ease-out;
 }
-/* Beim Antippen kommt die Karte dem Besucher ENTGEGEN (Kundenwunsch):
-   waechst + hebt sich, bevor die Kamera hineinfliegt. */
+/* Beim Beruehren/Ueberfahren kommt die Karte dem Besucher ENTGEGEN
+   (Kundenwunsch): waechst + hebt sich, bevor die Kamera hineinfliegt.
+   :hover fuer Maus (Tests am Laptop), :active fuer Touch. */
+.hub-card:hover,
 .hub-card:active {
   transform: scale(1.06) !important; /* schlaegt die rotate()-Inline-Style */
   box-shadow: var(--shadow-lg);
   border-color: var(--ink-300);
+  z-index: 2;
+}
+
+/* Karte "angehoben" waehrend des Long-Press-Drags. */
+.hub-card--dragging {
+  transform: scale(1.08) !important;
+  box-shadow: var(--shadow-lg);
+  border: 2px dashed var(--accent);
+  cursor: grabbing;
 }
 .hub-card__title {
   margin: 6px 0 8px;

@@ -79,6 +79,104 @@
 }
 .lead-thanks p { margin: 0; font-size: 30px; color: var(--ink-500); max-width: 800px; }
 
+/* Dicker roter Aktions-Button (Kalender oeffnen, Visitenkarte scannen).
+   .pill.… — doppelte Klasse schlaegt die weisse .pill-Grundregel unabhaengig
+   von der Bundle-Reihenfolge der CSS-Dateien. */
+.pill.lead-red-cta {
+  justify-content: center;
+  height: 92px;
+  font-size: 30px;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  flex: none;
+}
+.pill.lead-red-cta:disabled { opacity: 0.4; }
+
+/* Buchungskalender-Overlay (Google-Embed ?gv=true). */
+.calendar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  background: rgba(17, 17, 19, 0.45);
+  display: flex;
+  padding: 60px 80px 120px; /* unten Platz fuer den Zurueck-Button */
+  zoom: var(--k, 1);
+}
+.calendar-overlay .frame-demo { background: var(--paper); }
+
+/* ---------- Visitenkarten-Scanner ---------- */
+.cardscan {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  text-align: center;
+}
+.cardscan__hint {
+  margin: 0;
+  font-size: 28px;
+  color: var(--ink-700);
+  max-width: 800px;
+}
+.cardscan__viewport {
+  position: relative;
+  width: min(880px, 90%);
+  aspect-ratio: 16 / 10;
+  border: 6px solid #1FA84B; /* "gruenes Licht": Kamera aktiv */
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  background: var(--ink-900);
+  box-shadow: var(--shadow-lg);
+}
+.cardscan__viewport video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cardscan__light {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #1FA84B;
+  box-shadow: 0 0 12px #1FA84B;
+  animation: dot-pulse 1.6s ease-in-out infinite;
+}
+.pill.cardscan__cta {
+  justify-content: center;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  font-size: 30px;
+  height: 92px;
+  padding: 0 48px;
+}
+.pill.cardscan__cta:disabled { opacity: 0.4; }
+.cardscan__previews {
+  display: flex;
+  gap: 20px;
+}
+.cardscan__previews img {
+  width: 300px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--ink-200);
+  box-shadow: var(--shadow-sm);
+}
+.cardscan--thanks h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 72px;
+  color: var(--ink-900);
+}
+.cardscan--thanks p { margin: 0; font-size: 30px; color: var(--ink-500); max-width: 760px; }
+
 .lead-divider {
   display: flex;
   align-items: center;
