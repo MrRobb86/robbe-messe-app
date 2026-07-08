@@ -8,7 +8,9 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // 'prompt': WIR entscheiden, wann die neue Version aktiviert wird —
+      // naemlich im Attract-Mode (KioskSession), wenn niemand die App nutzt.
+      registerType: 'prompt',
       includeAssets: ['robbe-logo.png', 'fairs/**/*'],
       manifest: {
         name: 'Robbeversum — Messe-Kiosk',

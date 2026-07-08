@@ -99,6 +99,15 @@ export function KioskSessionProvider({ children }) {
       const m = modeRef.current
 
       if (m === 'attract') {
+        // Liegt ein Software-Update bereit (main.jsx merkt es sich), JETZT
+        // aktivieren — im Attract-Mode stoert der Reload niemanden. Damit
+        // kommen Deployments von selbst auf den Kiosk (kein alter
+        // Service-Worker-Cache mehr, kein manuelles Neuladen).
+        if (window.__swUpdateBereit && window.__swDoUpdate) {
+          window.__swUpdateBereit = false
+          window.__swDoUpdate()
+          return
+        }
         // Nach Interaktion + Rueckfall in den Attract: einmal komplett aufraeumen.
         if (dirty.current && now - attractSince.current >= config.idle.attractToResetMs) {
           resetSession()
