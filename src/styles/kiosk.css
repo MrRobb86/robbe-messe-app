@@ -19,6 +19,23 @@
   zoom: var(--k, 1);
 }
 
+/* Module mit eingebetteten externen Apps (Website, Unternehmens-KI, Copilot):
+   KEIN zoom — sonst passt der innere iframe-Viewport nicht zur sichtbaren
+   Flaeche (weisse Raender rechts/unten). Kopf-Typografie kompakter, damit
+   die App maximale Flaeche bekommt. */
+.module-layer--native {
+  zoom: 1;
+}
+.module-layer--native .module-head {
+  padding: 72px 32px 12px;
+}
+.module-layer--native .module-head h2 {
+  font-size: clamp(28px, 2.2vw, 44px);
+}
+.module-layer--native .module-body {
+  padding: 0 32px 110px;
+}
+
 /* Kein Markieren, kein Long-Press-Callout, kein Browser-Zoom auf der Buehne. */
 body {
   user-select: none;

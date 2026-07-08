@@ -28,7 +28,11 @@ Commits imperativ mit Phasen-Präfix (`P2: …`).
    Zielgerät ist ein Mittelklasse-Android-WebView.
 6. **Kiosk-Skalierung:** Overlays sind für 1920×1080 dimensioniert und werden über
    `zoom: var(--k, 1)` (Liste in kiosk.css, --k aus App.jsx) mitskaliert. Neue
-   Fullscreen-Overlays in diese Liste aufnehmen.
+   Fullscreen-Overlays in diese Liste aufnehmen. **AUSNAHME — iframes NIE unter
+   einen zoom-Vorfahren legen:** dann stimmt der innere iframe-Viewport nicht mit
+   der sichtbaren Fläche überein → externe Apps lassen weiße Ränder rechts/unten.
+   iframe-Module bekommen `module-layer--native` (zoom: 1, kompakter Kopf); der
+   Kalender-Overlay hat bewusst keinen zoom.
 
 ## Struktur (Ist)
 
