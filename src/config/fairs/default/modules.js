@@ -121,16 +121,153 @@ export const modules = [
     hubPosition: { x: 110, y: 410, rot: 1.4 },
     botTeaser: 'Frag mich, welches Angebot zu deinem Unternehmen passt.',
     payload: {
-      // Leistungen von robbe-consulting.de (Stand 07/2026).
+      // Leistungen von robbe-consulting.de (Stand 07/2026). Jede Karte hat
+      // eine Detailseite (detail) — Texte original von der Website.
       cards: [
-        { eyebrow: 'BERATUNG', title: 'KI-Beratung', text: 'Strategische KI-Integration in 12 Schritten — EU-AI-Act-konform, DSGVO-sicher. Done-with-you, nicht Done-for-you.' },
-        { eyebrow: 'SCHULUNG', title: 'KI-Schulungen', text: 'Von KI-Grundlagen bis Agenten und Automatisierungen — praxisnah, verständlich, sofort umsetzbar.' },
-        { eyebrow: 'SCHULUNG', title: 'Vertriebsschulungen', text: 'Für Jungverkäufer bis Vertriebsleiter — 18 Jahre B2B-Direktvertrieb, praxisnah und branchenspezifisch.' },
-        { eyebrow: 'COACHING', title: 'Vertriebscoaching', text: 'Echtes Mitreisen im Vertriebsalltag, Einzel- und Team-Formate — plus KI als Verstärker.' },
-        { eyebrow: 'UMSETZUNG', title: 'KI-Workflows & Automatisierung', text: 'Prozesse analysieren, digitalisieren, automatisieren — maßgeschneiderte Agenten in wenigen Wochen startklar.' },
-        { eyebrow: 'PRODUKT', title: 'Fonio — KI-Telefonagent', text: 'Nimmt Anrufe an wie ein Mitarbeiter: 24/7, auf Deutsch, DSGVO-konform. Wir sind Gold-Partner.' },
-        { eyebrow: 'PROGRAMM', title: 'KI-Führerschein', text: '90-Tage-Lernprogramm mit Online-Prüfung und Zertifikat — auch als kompakte Light-Variante.' },
-        { eyebrow: 'RECHT', title: 'EU AI Act & KI-Richtlinien', text: 'Seit 08/2025 verpflichtend — wir machen dein Unternehmen rechtssicher, verständlich und praxisnah.' },
+        {
+          eyebrow: 'BERATUNG',
+          title: 'KI-Beratung',
+          text: 'Strategische KI-Integration in 12 Schritten — EU-AI-Act-konform, DSGVO-sicher. Done-with-you, nicht Done-for-you.',
+          detail: {
+            intro:
+              'Strategische Integration von KI in deine Unternehmensprozesse — in 12 Schritten, EU-AI-Act-konform, DSGVO-sicher. Ich berate nicht nur, ich setze gemeinsam mit dir um: von der ersten Analyse bis zur dauerhaften Verankerung.',
+            punkte: [
+              { title: 'Grundlagen-Workshop', text: 'Was ist KI, was kann sie — und was nicht? Gemeinsames Verständnis im Führungsteam schaffen.' },
+              { title: 'Analysen', text: 'Outside-in durch den Berater + Inside-out mit der Geschäftsführung: Prozesse, Potenziale und Risiken werden sichtbar.' },
+              { title: 'AI Champions', text: 'Interne Multiplikatoren werden identifiziert und befähigt — sie tragen die Transformation in die Abteilungen.' },
+              { title: 'Strategie-Workshop', text: 'Vision, Anwendungsfälle und Roadmap für die ersten 100 Tage — gemeinsam erarbeitet und dokumentiert.' },
+              { title: 'Unternehmens-KI', text: 'Aufbau einer sicheren, DSGVO-konformen KI-Plattform — Serverstandort Deutschland, alle relevanten Modelle.' },
+              { title: 'Change Management & Verankern', text: 'Mitarbeiter aktiv begleiten, KI-Richtlinien erstellen, laufende Sparringspartnerschaft sichert den Erfolg.' },
+            ],
+            fakten: '12 Schritte · Done-with-you · EU-AI-Act-konform · DSGVO-sicher · Umsetzung in Wochen · 18 Jahre B2B-Vertriebserfahrung',
+          },
+        },
+        {
+          eyebrow: 'SCHULUNG',
+          title: 'KI-Schulungen',
+          text: 'Von KI-Grundlagen bis Agenten und Automatisierungen — praxisnah, verständlich, sofort umsetzbar.',
+          detail: {
+            intro:
+              'Von KI-Grundlagen bis zu Agenten und Automatisierungen — für Mitarbeiter, Teams und Führungskräfte. Praxisnah, verständlich und sofort umsetzbar. Kein Seminar von der Stange: jede Schulung wird auf Branche und Erfahrungsstufe zugeschnitten.',
+            punkte: [
+              { title: 'KI-Grundlagen & LLMs', text: 'Was ist KI wirklich? ChatGPT, Claude & Gemini im Vergleich — live demonstriert und sofort anwendbar.' },
+              { title: 'Prompting', text: 'Die Kunst, KI richtig anzusprechen: von Grundlagen bis Chain-of-Thought, Few-Shot und rollenbasiertem Prompting.' },
+              { title: 'Agenten & GPTs', text: 'Eigene KI-Agenten und personalisierte GPTs aufbauen, Wissensdatenbanken strukturieren.' },
+              { title: 'Automatisierungen & KI-Tools', text: 'Workflow-Automatisierung ohne Programmierkenntnisse — plus Überblick über das ganze Tool-Ökosystem.' },
+              { title: 'Vibe Coding', text: 'Software und Automatisierungen erstellen — ohne klassische Programmierkenntnisse.' },
+              { title: 'Datenschutz & EU AI Act', text: 'DSGVO, Risikoklassen und KI-Richtlinien — rechtssicher und fester Bestandteil jeder Schulung.' },
+            ],
+            fakten: 'Einheiten 90–180 Min · WissensGPT statt Handout · 90-Tage-Lernfahrplan · Präsenz oder online · keine Vorkenntnisse nötig',
+          },
+        },
+        {
+          eyebrow: 'SCHULUNG',
+          title: 'Vertriebsschulungen',
+          text: 'Für Jungverkäufer bis Vertriebsleiter — 18 Jahre B2B-Direktvertrieb, praxisnah und branchenspezifisch.',
+          detail: {
+            intro:
+              '18 Jahre B2B-Direktvertrieb: praxisnah, branchenspezifisch und mit echtem Mitreisen im Außendienst. Keine Einheitsfolien — nur relevante Inhalte aus der Praxis, zugeschnitten auf dein Produktportfolio.',
+            punkte: [
+              { title: 'Jungverkäufer', text: 'Der perfekte Start: Grundlagen des erfolgreichen Verkaufs, Zeitmanagement, Akquise und Beziehungsaufbau.' },
+              { title: 'Fortgeschrittene', text: 'Abschlussquote steigern: tiefe Kundenanalyse, die neuen Phasen im Verkaufsgespräch, Einwand- & Vorwandbehandlung.' },
+              { title: 'Vertriebsleiter der Zukunft', text: 'Führung & Motivation, KI-First-Strategie, Vertriebscontrolling und Teams durch die digitale Transformation führen.' },
+              { title: 'Akquise & Neukundengewinnung', text: 'Systematisch im B2B: Zielkunden definieren, Erstkontakt gestalten, Termine vereinbaren — analog und digital.' },
+              { title: 'Einwand- & Vorwandbehandlung', text: 'Souverän reagieren — mit Rollenspielen und direktem Feedback.' },
+              { title: 'Inhouse-Seminare', text: 'Direkt in deinem Unternehmen — mit Beispielen aus deinem Sortiment. Optimal 6–12 Teilnehmer.' },
+            ],
+            fakten: '18 Jahre B2B-Praxis · 6–12 Teilnehmer · WissensGPT statt Handout · 90-Tage-Fahrplan · inhouse oder online',
+          },
+        },
+        {
+          eyebrow: 'COACHING',
+          title: 'Vertriebscoaching',
+          text: 'Echtes Mitreisen im Vertriebsalltag, Einzel- und Team-Formate — plus KI als Verstärker.',
+          detail: {
+            intro:
+              'Ziel: Verkäufer noch erfolgreicher machen. Mit 18 Jahren B2B-Erfahrung, echtem Mitreisen im Vertriebsalltag und KI-Integration — echte Kundengespräche, direktes Feedback, messbare Ergebnisse.',
+            punkte: [
+              { title: 'Analyse & Zieldefinition', text: 'Wo steht der Verkäufer heute? Konkrete, messbare Ziele für Umsatz, Abschlussquote und Kundenbindung.' },
+              { title: 'Praktische Begleitung', text: 'Mitreisen im Vertriebsalltag: echte Kundengespräche, direktes Feedback, sofortige Anpassung der Methodik.' },
+              { title: 'KI-Integration', text: 'KI-Tools im persönlichen Vertriebsprozess: Gesprächsvorbereitung, Nachbereitung, Analyse.' },
+              { title: 'Einzel-Coaching', text: 'Intensives 1:1 für Verkäufer oder Führungskräfte — maximal individuell, maximal wirksam.' },
+              { title: 'Team- & Hybrid-Coaching', text: 'Das ganze Vertriebsteam entwickeln — vor Ort und online kombiniert.' },
+              { title: 'CoachingPass', text: 'Festes Kontingent an Einheiten pro Monat, monatlich kündbar — Kontinuität schlägt Einmalmaßnahmen.' },
+            ],
+            fakten: 'Basis ab 3 Monaten · empfohlen 6–12 Monate · Mitreisen vor Ort · messbare Ergebnisse',
+          },
+        },
+        {
+          eyebrow: 'UMSETZUNG',
+          title: 'KI-Workflows & Automatisierung',
+          text: 'Prozesse analysieren, digitalisieren, automatisieren — maßgeschneiderte Agenten in wenigen Wochen startklar.',
+          detail: {
+            intro:
+              'Wir schauen uns deine Prozesse an, schreiben sie nieder und digitalisieren sie. Maßgeschneiderte Software, Agenten und Automatisierungen — in wenigen Wochen startklar, ohne Programmierkenntnisse auf deiner Seite.',
+            punkte: [
+              { title: 'Agenten & digitale Mitarbeiter', text: 'Personalisierte GPTs, LLM-Agenten und Assistenten: Leadgenerierung, Gesprächsskripte, Kalkulationen.' },
+              { title: 'Prozessautomatisierung', text: 'Wiederkehrendes automatisieren: Angebotsgenerator, Verbrauchsartikel-Reminder, Onboarding u. v. m.' },
+              { title: 'Wissensdatenbanken (RAG)', text: 'Eigene Dokumente und Produktdaten mit KI verknüpfen — für Mitarbeiter, Abteilungen und Chatbots.' },
+              { title: 'Web-Apps für die Branche', text: 'Bautagebuch, Dachwartungstool, Maschinenaufnahmetool — nach deinem Kundenprozess gebaut.' },
+              { title: 'Klick & Collect Plattform', text: 'Online reservieren, vor Ort übergeben — mit KI-Kundenunterstützung rund um die Uhr.' },
+              { title: 'Webdesign & digitaler Auftritt', text: 'Moderne Webauftritte, auf Wunsch mit KI-Chat und intelligenter Kundenführung.' },
+            ],
+            fakten: 'In Wochen startklar · No-Code (n8n, Make) · Begleitung vom Start bis zur Lösung',
+          },
+        },
+        {
+          eyebrow: 'PRODUKT',
+          title: 'Fonio — KI-Telefonagent',
+          text: 'Nimmt Anrufe an wie ein Mitarbeiter: 24/7, auf Deutsch, DSGVO-konform. Wir sind Gold-Partner.',
+          detail: {
+            intro:
+              'Dein Telefon nimmt Anrufe an wie ein Mitarbeiter — 24/7, auf Deutsch, DSGVO-konform, Serverstandort Deutschland. Kein Anruf bleibt unbeantwortet. Als Fonio Gold Partner richte ich den Agenten für dich ein — von der Bedarfsanalyse bis zum Go-live.',
+            punkte: [
+              { title: 'Sekretariat & Anrufbeantworter', text: 'Nimmt Anrufe entgegen, gibt Auskunft, leitet weiter — auch in der Mittagspause und nach Feierabend.' },
+              { title: 'Terminvereinbarung', text: 'Bucht Termine direkt in deinen Kalender — prüft Verfügbarkeit und bestätigt sofort.' },
+              { title: 'Kundenservice & FAQ', text: 'Öffnungszeiten, Preise, Lieferzeiten, Produktinfos — sofort beantwortet, Team spürbar entlastet.' },
+              { title: 'Lead-Qualifizierung', text: 'Stellt die richtigen Fragen und übergibt qualifizierte Leads an den Außendienst — mit Gesprächsprotokoll.' },
+              { title: 'Transkription per E-Mail', text: 'Jedes Gespräch automatisch transkribiert und zugestellt — kein Detail geht verloren.' },
+              { title: 'WhatsApp Add-on', text: 'Derselbe Assistent auch auf WhatsApp: FAQ, Terminbuchung, Bestellannahme — kein zweites Setup.' },
+            ],
+            fakten: '24/7 erreichbar · 100 % Anrufquote · Serverstandort Deutschland · DSGVO-konform · Fonio Gold Partner',
+          },
+        },
+        {
+          eyebrow: 'PROGRAMM',
+          title: 'KI-Führerschein',
+          text: '90-Tage-Lernprogramm mit Online-Prüfung und Zertifikat — auch als kompakte Light-Variante.',
+          detail: {
+            intro:
+              'Strukturiertes KI-Wissen für Mitarbeitende und Teams — in zwei Varianten, mit Online-Prüfung und Zertifikat. Erfüllt nachweislich die Anforderungen aus Artikel 4 EU AI Act zur KI-Kompetenz der Mitarbeitenden.',
+            punkte: [
+              { title: 'Light — 4 Wochen', text: 'KI-Grundlagen & LLMs, Prompting, Agenten & Tools, Vibecoding — die kompakte Essenz, 90 Minuten pro Woche.' },
+              { title: 'Vollprogramm — 3 Monate', text: '10 Module von KI-Grundlagen über DSGVO & EU AI Act bis KI-Strategie — inklusive Robbe AI-Copilot-Testzugang.' },
+              { title: 'Online-Prüfung', text: 'Multiple Choice, 70 % Bestehensgrenze, beliebig oft wiederholbar — Ziel ist der Lernerfolg.' },
+              { title: 'Zertifikat', text: 'Digitales PDF-Zertifikat, auf Wunsch mit Unternehmensname — plus LinkedIn-teilbares Badge.' },
+              { title: 'Keine Vorkenntnisse nötig', text: 'Grundlegende PC-Kenntnisse genügen — Offenheit und Neugier reichen für den Einstieg.' },
+              { title: 'EU-AI-Act-Nachweis', text: 'Dokumentiert die KI-Kompetenz deiner Mitarbeitenden nach Artikel 4 — rechtssicher belegt.' },
+            ],
+            fakten: '2 Varianten (4 Wochen / 3 Monate) · online & selbstbestimmt · Zertifikat · Copilot-Testzugang inklusive (Vollprogramm)',
+          },
+        },
+        {
+          eyebrow: 'RECHT',
+          title: 'EU AI Act & KI-Richtlinien',
+          text: 'Seit 08/2025 verpflichtend — wir machen dein Unternehmen rechtssicher, verständlich und praxisnah.',
+          detail: {
+            intro:
+              'Seit dem 2.8.2025 sind KI-Richtlinien gesetzlich verpflichtend — für alle Unternehmen mit KI-Einsatz. Wer KI verbietet, verliert den Wettbewerbsvorteil; wer sie unkontrolliert lässt, riskiert Schaden. Der richtige Weg: Richtlinien, Schulung, kontrollierter Einsatz.',
+            punkte: [
+              { title: 'Risiko: Unkontrollierte Nutzung', text: 'Mitarbeiter nutzen KI ohne Regeln — ohne Überblick, was geteilt wird.' },
+              { title: 'Risiko: Datenleck & DSGVO', text: 'Interne und personenbezogene Daten können über KI-Tools nach außen gelangen — mit rechtlichen Folgen.' },
+              { title: 'Grundschulung', text: 'EU AI Act und KI-Datenschutz — verständlich und praxisnah für dein Team.' },
+              { title: 'Firmenspezifische KI-Richtlinien', text: 'Als Konzept zur Vorlage und rechtssicheren Prüfung — zugeschnitten auf dein Unternehmen.' },
+              { title: 'Fortlaufende Unterweisung', text: 'Z. B. jährlich — inklusive Dokumentation und Nachweis der Mitarbeiterkompetenz (Artikel 4).' },
+              { title: 'Schnell umsetzbar', text: 'Risikoklassifizierung, Richtlinien und Schulung — mit Begleitung in 4 bis 8 Wochen.' },
+            ],
+            fakten: 'Pflicht seit 08/2025 (Art. 4 EU AI Act) · alle Unternehmen mit KI-Einsatz · umsetzbar in 4–8 Wochen',
+          },
+        },
       ],
     },
   },

@@ -175,6 +175,60 @@
 }
 .content-card p { margin: 0; font-size: 24px; line-height: var(--lh-normal); color: var(--ink-500); }
 
+/* Antippbare Angebots-Karte (hat eine Detailseite). */
+.content-card--tappable {
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid var(--ink-200);
+  font: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+.content-card--tappable:active { border-color: var(--accent); }
+.content-card__more {
+  margin-top: auto;
+  padding-top: 16px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 22px;
+}
+.content-card--compact { padding: 26px 28px; }
+.content-card--compact h3 { font-size: 28px; margin-top: 0; }
+.content-card--compact p { font-size: 22px; }
+
+/* Angebots-Detailseite. */
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-bottom: 40px;
+}
+.detail__back { align-self: flex-start; }
+.detail__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 52px;
+  line-height: var(--lh-tight);
+  color: var(--ink-900);
+}
+.detail__intro {
+  margin: 0;
+  font-size: 27px;
+  line-height: var(--lh-normal);
+  color: var(--ink-700);
+  max-width: 1150px;
+}
+.detail__fakten {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--ink-500);
+}
+.detail__cta-row { display: flex; }
+.pill.detail__cta { padding: 0 44px; }
+
 .team-card img {
   width: 100%;
   aspect-ratio: 4 / 3;

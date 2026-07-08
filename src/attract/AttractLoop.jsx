@@ -3,9 +3,37 @@
 // ein Overlay. Jeder Touch geht durch das Overlay hindurch und weckt den
 // Kiosk (Handler liegt in App).
 import { useEffect, useMemo, useState } from 'react'
-import { attractScenes } from '../config/index.js'
+import { attractScenes, getModule } from '../config/index.js'
 import Wordmark from '../components/Wordmark.jsx'
 import './attract.css'
+
+// Die 8 Angebote fliegen als ROTE Kaesten nacheinander rein und raus.
+// Inhalte kommen direkt aus dem Angebote-Modul (eine Quelle, keine Doppelpflege).
+function AngeboteFly({ scene }) {
+  const cards = getModule('angebote')?.payload.cards || []
+  const [idx, setIdx] = useState(0)
+  useEffect(() => {
+    setIdx(0)
+    const t = setInterval(() => setIdx((i) => (i + 1) % cards.length), scene.perItemMs)
+    return () => clearInterval(t)
+  }, [scene.perItemMs, cards.length])
+  const c = cards[idx]
+  if (!c) return null
+  return (
+    <div className="attract-scene">
+      <h2 className="attract-headline" style={{ fontSize: 'clamp(48px, 3.6vw, 72px)' }}>
+        Was wir anbieten<span className="accent-em">.</span>
+      </h2>
+      <div className="attract-angebot" key={idx} style={{ '--fly-dur': `${scene.perItemMs}ms` }}>
+        <span className="attract-angebot__nr">
+          {String(idx + 1).padStart(2, '0')} / {String(cards.length).padStart(2, '0')} — {c.eyebrow}
+        </span>
+        <h3 className="attract-angebot__title">{c.title}</h3>
+        <p className="attract-angebot__text">{c.text}</p>
+      </div>
+    </div>
+  )
+}
 
 // Tippender Text: erst die Frage Zeichen fuer Zeichen (40ms), kurze Pause,
 // dann die Antwort Wort fuer Wort — wie echtes Streaming, aber vorproduziert.
@@ -101,6 +129,9 @@ function Scene({ scene }) {
         <p className="attract-sub">{scene.sub}</p>
       </div>
     )
+  }
+  if (scene.type === 'angebote') {
+    return <AngeboteFly scene={scene} key={scene.id} />
   }
   if (scene.type === 'chatDemo') {
     return (

@@ -92,6 +92,47 @@
 }
 @keyframes caret-blink { 50% { opacity: 0; } }
 
+/* Angebots-Szene: ROTER Kasten fliegt rein, haelt, fliegt raus (Kundenwunsch).
+   Nur transform/opacity — 60fps auf Android. */
+.attract-angebot {
+  margin: 44px auto 0;
+  width: min(1050px, 84vw);
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+  padding: 44px 52px;
+  text-align: left;
+  animation: angebot-fly var(--fly-dur, 5500ms) var(--ease-fly) both;
+}
+@keyframes angebot-fly {
+  0%   { opacity: 0; transform: translateX(340px) rotate(1.2deg); }
+  9%   { opacity: 1; transform: translateX(0) rotate(0deg); }
+  91%  { opacity: 1; transform: translateX(0) rotate(0deg); }
+  100% { opacity: 0; transform: translateX(-340px) rotate(-1.2deg); }
+}
+.attract-angebot__nr {
+  font-family: var(--font-mono);
+  font-size: 19px;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.attract-angebot__title {
+  margin: 12px 0 14px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(44px, 3.6vw, 64px);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+}
+.attract-angebot__text {
+  margin: 0;
+  font-size: 28px;
+  line-height: var(--lh-snug);
+  opacity: 0.94;
+}
+
 /* Worte-Szene: 4 grosse Worte wechseln durch. */
 .attract-word {
   animation: attract-fade 600ms ease-out both;

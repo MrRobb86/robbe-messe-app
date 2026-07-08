@@ -5,17 +5,59 @@ import ChatScreen from '../components/ChatScreen.jsx'
 import IframeModule from '../components/IframeModule.jsx'
 import LeadModule from './LeadModule.jsx'
 import { config } from '../config/index.js'
+import { useKiosk } from '../kiosk/KioskSession.jsx'
 
+// Content-Karten. Karten mit `detail` in der Config sind antippbar und
+// oeffnen eine tiefergehende Informationsseite (Angebots-Detail).
 function ContentCards({ cards }) {
+  const { openModule } = useKiosk()
+  const [detail, setDetail] = useState(null)
+
+  if (detail) {
+    return (
+      <div className="detail scrollable">
+        <button className="chip pressable detail__back" onClick={() => setDetail(null)}>
+          ← Zurück zur Übersicht
+        </button>
+        <p className="eyebrow">{detail.eyebrow}</p>
+        <h3 className="detail__title">{detail.title}</h3>
+        <p className="detail__intro">{detail.detail.intro}</p>
+        <div className="cards-grid" style={{ overflow: 'visible' }}>
+          {detail.detail.punkte.map((p) => (
+            <div key={p.title} className="content-card content-card--compact">
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </div>
+          ))}
+        </div>
+        {detail.detail.fakten && <p className="detail__fakten">{detail.detail.fakten}</p>}
+        <div className="detail__cta-row">
+          <button className="pill pressable lead-red-cta detail__cta" onClick={() => openModule('kontakt')}>
+            Sprechen wir darüber →
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="cards-grid scrollable">
-      {cards.map((c) => (
-        <div key={c.title} className="content-card">
-          <p className="eyebrow">{c.eyebrow}</p>
-          <h3>{c.title}</h3>
-          <p>{c.text}</p>
-        </div>
-      ))}
+      {cards.map((c) =>
+        c.detail ? (
+          <button key={c.title} className="content-card content-card--tappable pressable" onClick={() => setDetail(c)}>
+            <p className="eyebrow">{c.eyebrow}</p>
+            <h3>{c.title}</h3>
+            <p>{c.text}</p>
+            <span className="content-card__more">Mehr erfahren →</span>
+          </button>
+        ) : (
+          <div key={c.title} className="content-card">
+            <p className="eyebrow">{c.eyebrow}</p>
+            <h3>{c.title}</h3>
+            <p>{c.text}</p>
+          </div>
+        )
+      )}
     </div>
   )
 }

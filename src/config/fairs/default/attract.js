@@ -13,34 +13,15 @@ export const attractScenes = [
     sub: 'KI, die im Mittelstand ankommt.',
   },
   {
-    id: 'wissenski',
-    type: 'chatDemo',
-    focusModule: 'wissenski',
-    durationMs: 16000,
-    headline: 'Frag einfach unser Firmenwissen.',
-    // Vorproduziertes Skript — kein Live-API-Call im Leerlauf.
-    script: {
-      question: 'Wie läuft ein KI-Strategie-Workshop ab?',
-      answer:
-        'Ein Tag bei euch im Haus: Wir nehmen eure Prozesse auseinander, ' +
-        'priorisieren die besten KI-Anwendungsfälle in einer 2x2-Matrix und ' +
-        'ihr geht mit einer konkreten Roadmap raus — inklusive Quick Wins, ' +
-        'die sich in Wochen rechnen.',
-    },
-  },
-  {
-    id: 'websitebot',
-    type: 'chatDemo',
-    focusModule: 'websitebot',
-    durationMs: 12000,
-    headline: 'Dieser Chatbot arbeitet gerade jetzt für einen Kunden.',
-    script: {
-      question: 'Habt ihr Whisky-Tastings im Angebot?',
-      answer:
-        'Ja! Bei VOM FASS Freudenstadt gibt es regelmäßig Tastings — ' +
-        'aktuelle Termine und Anmeldung findest du direkt im Shop. ' +
-        'Soll ich dir die Übersicht schicken?',
-    },
+    // Die 8 Angebote fliegen als ROTE Kaesten nacheinander rein und raus
+    // (Kundenwunsch 07/2026). Inhalte kommen aus modules.js → angebote.cards
+    // (eine Quelle, keine Doppelpflege). perItemMs = Dauer pro Angebot.
+    id: 'angebote',
+    type: 'angebote',
+    focusModule: 'angebote',
+    perItemMs: 5500,
+    durationMs: 8 * 5500,
+    headline: 'Was wir anbieten',
   },
   {
     id: 'arbeit',
@@ -57,17 +38,24 @@ export const attractScenes = [
     ],
   },
   {
-    id: 'team',
-    type: 'team',
-    focusModule: 'team',
-    durationMs: 10000,
-    headline: 'Menschen, keine Buzzwords.',
+    id: 'websitebot',
+    type: 'chatDemo',
+    focusModule: 'websitebot',
+    durationMs: 12000,
+    headline: 'Dieser Chatbot arbeitet gerade jetzt für einen Kunden.',
+    script: {
+      question: 'Habt ihr Whisky-Tastings im Angebot?',
+      answer:
+        'Ja! Bei VOM FASS Freudenstadt gibt es regelmäßig Tastings — ' +
+        'aktuelle Termine und Anmeldung findest du direkt im Shop. ' +
+        'Soll ich dir die Übersicht schicken?',
+    },
   },
   {
     id: 'cta',
     type: 'cta',
     focusModule: 'overview', // Zoom-Out auf die Gesamtkonstellation
-    durationMs: 10000,
+    durationMs: 8000,
     headline: 'Berühr den Bildschirm —',
     sub: 'und flieg selbst durchs RobbeVersum.',
   },
