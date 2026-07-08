@@ -148,9 +148,7 @@ function Kiosk() {
 
       <button className="stage-logo" onPointerDown={onLogoTap}>
         <img src="/robbe-logo.png" alt="Robbe Sales & AI Consulting" />
-        <span>
-          {config.kontakt.firma} — {config.messe.stand}
-        </span>
+        <span>{config.kontakt.firma}</span>
       </button>
 
       <div className="stage-phone">

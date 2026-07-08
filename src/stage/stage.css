@@ -56,17 +56,6 @@
   color: var(--ink-900);
   line-height: var(--lh-tight);
 }
-/* Wortmarke mit R-Symbol zwischen ROBBE und VERSUM. */
-.stage-wordmark {
-  display: inline-flex;
-  align-items: center;
-}
-.stage-wordmark__mark {
-  height: 0.86em;      /* etwas kleiner als die Versalhoehe */
-  width: auto;
-  margin: 0 0.06em;
-  transform: translateY(-0.02em);
-}
 .stage-center .eyebrow { margin-bottom: 12px; }
 
 /* ---------- Hub-Karten ---------- */

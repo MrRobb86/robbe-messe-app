@@ -1,0 +1,15 @@
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+/* R-Symbol als Trenner — transparenter Hintergrund, Papier scheint durch. */
+.wordmark__mark {
+  height: 0.82em;
+  width: auto;
+  margin: 0 0.08em;
+  transform: translateY(-0.02em);
+}
+.wordmark__dot {
+  color: var(--accent);
+}

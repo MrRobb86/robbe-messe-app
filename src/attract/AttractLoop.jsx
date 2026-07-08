@@ -4,6 +4,7 @@
 // Kiosk (Handler liegt in App).
 import { useEffect, useMemo, useState } from 'react'
 import { attractScenes } from '../config/index.js'
+import Wordmark from '../components/Wordmark.jsx'
 import './attract.css'
 
 // Tippender Text: erst die Frage Zeichen fuer Zeichen (40ms), kurze Pause,
@@ -94,9 +95,8 @@ function Scene({ scene }) {
     return (
       <div className="attract-scene" key={scene.id}>
         <StaggeredHeadline text={scene.headline} />
-        <h2 className="attract-headline attract-wordmark">
-          ROBBE<img className="attract-wordmark__mark" src="/robbe-symbol.png" alt="" />VERSUM
-          <span className="accent-em">.</span>
+        <h2 className="attract-headline">
+          <Wordmark caps />
         </h2>
         <p className="attract-sub">{scene.sub}</p>
       </div>

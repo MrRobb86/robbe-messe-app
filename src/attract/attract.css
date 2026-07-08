@@ -34,21 +34,8 @@
 }
 .attract-headline .accent-em { color: var(--accent); }
 
-/* Wortmarke im Startbildschirm: ROBBE [R-Symbol] VERSUM in einer Zeile,
-   das Symbol als Trennelement statt Umbruch. */
-.attract-wordmark {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  margin-top: 0.15em;
-}
-.attract-wordmark__mark {
-  height: 0.82em;
-  width: auto;
-  margin: 0 0.08em;
-  transform: translateY(-0.02em);
-}
+/* Wortmarke im Startbildschirm braucht etwas Abstand nach oben. */
+.attract-scene .wordmark { margin-top: 0.15em; }
 
 .attract-sub {
   margin: 28px 0 0;

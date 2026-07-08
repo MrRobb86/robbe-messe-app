@@ -15,6 +15,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { modules, config } from '../config/index.js'
 import { getLayout, saveLayoutPos } from '../kiosk/settings.js'
+import Wordmark from '../components/Wordmark.jsx'
 import './stage.css'
 
 const CARD_W = 400
@@ -80,7 +81,9 @@ function ConstellationLines({ positions, dims }) {
       {centers.map((c) => (
         <circle key={c.id} cx={c.x} cy={c.y} r="6" />
       ))}
-      <circle cx={dims.center.x} cy={dims.center.y} r="6" />
+      {/* KEIN zentraler roter Punkt mehr — die Linien laufen auf dem
+          Design-Element (R-Symbol der Wortmarke) zusammen; der einzige rote
+          Punkt am Zentrum ist der Punkt der Wortmarke nach VERSUM. */}
     </svg>
   )
 }
@@ -306,9 +309,8 @@ export default function RobbeversumStage({ focus, flightMode = 'camera', hubHidd
         >
           <div className="stage-center" style={{ left: dims.center.x, top: dims.center.y }}>
             <p className="eyebrow">{config.kontakt.firma}</p>
-            <h1 className="stage-wordmark">
-              ROBBE<img className="stage-wordmark__mark" src="/robbe-symbol.png" alt="" />VERSUM
-              <span style={{ color: 'var(--accent)' }}>.</span>
+            <h1>
+              <Wordmark caps />
             </h1>
           </div>
           {/* Linien UND Karten teilen sich denselben "breathing"-Wrapper, damit
