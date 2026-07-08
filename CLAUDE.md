@@ -63,15 +63,19 @@ src/
 - **Einstellungsseite:** 5× schneller Tap aufs Logo → PIN (`VITE_ADMIN_PIN`, Default
   2468) → Telefon/Termin-URL/Idle-Zeiten/Layout-Modus. Overrides in localStorage.
 - **Hub-Layout / Ziehen:** JEDER darf Karten frei ziehen — gedrückt halten und
-  bewegen, Drag ab 12 px (Tap ohne Bewegung öffnet). WÄHREND des Ziehens weichen
-  die anderen Karten live aus (dodgeOthers + 300ms-left/top-Transition). Beim
-  Loslassen: Abstoßen (GAP 36 px — größer als der kombinierte Schwebe-Drift
-  2×14 px), globale Entspannung (relaxAll, mit Rastersuche-Fallback gegen
-  Rand-Oszillation), Zentrum-Zone bleibt frei, auf voller Bühne Platztausch.
-  Funktioniert in Quer- UND Hochformat (Hochformat-Wortmarke sitzt bei y 430,
-  damit oberhalb Platz für eine Karte ist). Besucher-Verschiebungen sind
-  temporär (Session-Reset stellt Ordnung her); DAUERHAFT speichert nur der
-  Layout-Modus der Einstellungen (`rq_layout` / `rq_layout_portrait`).
+  bewegen, Drag ab 12 px (Tap ohne Bewegung öffnet). Die gesamte Kollisionslogik
+  ist EINE Funktion `separate(layout, dims, fixedId)` in RobbeversumStage.jsx:
+  volle Positions-Momentaufnahme → gezogene Karte auf Fingerposition → feste
+  60 Iterationen Auseinanderdrücken (andere weichen aus, gezogene bleibt fix,
+  Zentrum-Zone frei). Deterministisch, NaN-gesichert (`finite()`), hängt nie.
+  Läuft identisch bei jedem pointermove UND beim Loslassen. Klick-nach-Drag wird
+  über `justDragged`-Ref unterdrückt, NICHT per setTimeout (ein Timer würgte
+  sonst einen schnell folgenden zweiten Drag ab). Funktioniert in Quer- UND
+  Hochformat (Hochformat-Wortmarke y 430, damit oberhalb Platz ist).
+  Besucher-Verschiebungen sind temporär (Session-Reset stellt Ordnung her);
+  DAUERHAFT speichert nur der Layout-Modus (`rq_layout` / `rq_layout_portrait`).
+  GAP 36 px (> kombinierter Schwebe-Drift). NIE wieder dodge/resolve/relax/swap
+  einführen — das war die Bug-Quelle (State-Inkonsistenz + Hänger).
 
 ## Entwicklung
 
