@@ -9,7 +9,7 @@ export const attractScenes = [
     type: 'brand',
     focusModule: null, // Zentrum der Konstellation
     durationMs: 8000,
-    headline: 'Willkommen im RobbeVersum.',
+    headline: 'Willkommen',
     sub: 'KI, die im Mittelstand ankommt.',
   },
   {

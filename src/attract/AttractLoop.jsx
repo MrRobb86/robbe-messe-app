@@ -89,9 +89,15 @@ function RotatingWords({ words, durationMs }) {
 
 function Scene({ scene }) {
   if (scene.type === 'brand') {
+    // Startbildschirm: "Willkommen" oben, darunter die Wortmarke mit dem
+    // R-Symbol als Trennelement (statt einer umbrechenden Textzeile).
     return (
       <div className="attract-scene" key={scene.id}>
         <StaggeredHeadline text={scene.headline} />
+        <h2 className="attract-headline attract-wordmark">
+          ROBBE<img className="attract-wordmark__mark" src="/robbe-symbol.png" alt="" />VERSUM
+          <span className="accent-em">.</span>
+        </h2>
         <p className="attract-sub">{scene.sub}</p>
       </div>
     )
