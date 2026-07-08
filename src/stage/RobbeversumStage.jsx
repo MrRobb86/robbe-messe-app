@@ -27,14 +27,22 @@ const GAP = 36
 
 const DIMS = {
   landscape: { w: 1920, h: 1080, center: { x: 960, y: 470 } },
-  portrait: { w: 1080, h: 1920, center: { x: 540, y: 320 } },
+  // Hochformat: Wortmarke bewusst so tief (y 430), dass OBERHALB eine
+  // Karte Platz hat (270 + GAP + Zone) — Kundenwunsch: auch ueber dem
+  // RobbeVersum darf geparkt werden.
+  portrait: { w: 1080, h: 1920, center: { x: 540, y: 430 } },
+}
+
+// Schutzzone um die Wortmarke — hier parkt keine Karte.
+function centerZone(dims) {
+  return { x: dims.center.x - 320, y: dims.center.y - 80, w: 640, h: 160 }
 }
 
 // Hochformat-Default: 2-Spalten-Raster unter der Wortmarke.
 function portraitDefault(index) {
   const col = index % 2
   const row = Math.floor(index / 2)
-  return { x: col === 0 ? 70 : 610, y: 520 + row * 330, rot: col === 0 ? -1.2 : 1.2 }
+  return { x: col === 0 ? 70 : 610, y: 560 + row * 330, rot: col === 0 ? -1.2 : 1.2 }
 }
 
 // Fittet die Design-Flaeche in den realen Viewport (contain, zentriert).
@@ -170,17 +178,11 @@ function HubCard({ mod, pos, index, editMode, fit, dims, onOpen, onMoved }) {
 // geringsten Eindringtiefe, iterativ, damit Kettenkollisionen aufgehen.
 function resolveCollisions(id, pos, positions, dims) {
   const p = { ...pos }
-  const centerZone = {
-    x: dims.center.x - 320,
-    y: dims.center.y - 100,
-    w: 640,
-    h: 200,
-  }
   const obstacles = [
     ...Object.entries(positions)
       .filter(([oid]) => oid !== id)
       .map(([, o]) => ({ x: o.x, y: o.y, w: CARD_W, h: CARD_H })),
-    centerZone,
+    centerZone(dims),
   ]
   for (let i = 0; i < 24; i++) {
     let pushed = false
@@ -232,6 +234,120 @@ function resolveCollisions(id, pos, positions, dims) {
   return { ...p, resolved: true }
 }
 
+// Live-Ausweichen: Karten, die der gezogenen Karte im Weg sind, machen
+// waehrend des Ziehens Platz (volle Trennung auf GAP, entlang der Achse
+// der geringsten Eindringtiefe). Die 300ms-left/top-Transition der
+// Wrapper macht daraus eine weiche Fluchtbewegung.
+function dodgeOthers(dragId, dragPos, positions, dims) {
+  const moved = {}
+  for (const [oid, o] of Object.entries(positions)) {
+    if (oid === dragId) continue
+    const overlapX = Math.min(dragPos.x + CARD_W + GAP, o.x + CARD_W + GAP) - Math.max(dragPos.x - GAP, o.x - GAP)
+    const overlapY = Math.min(dragPos.y + CARD_H + GAP, o.y + CARD_H + GAP) - Math.max(dragPos.y - GAP, o.y - GAP)
+    if (overlapX <= 0 || overlapY <= 0) continue
+    const p = { x: o.x, y: o.y }
+    if (overlapX < overlapY) {
+      const dir = o.x + CARD_W / 2 < dragPos.x + CARD_W / 2 ? -1 : 1
+      const nx = p.x + dir * overlapX
+      p.x = nx < 0 || nx > dims.w - CARD_W ? p.x - dir * overlapX : nx
+    } else {
+      const dir = o.y + CARD_H / 2 < dragPos.y + CARD_H / 2 ? -1 : 1
+      const ny = p.y + dir * overlapY
+      p.y = ny < 0 || ny > dims.h - CARD_H ? p.y - dir * overlapY : ny
+    }
+    p.x = Math.max(0, Math.min(dims.w - CARD_W, p.x))
+    p.y = Math.max(0, Math.min(dims.h - CARD_H, p.y))
+    moved[oid] = p
+  }
+  return moved
+}
+
+// Globale Entspannung nach dem Loslassen: ALLE Kartenpaare (und die
+// Zentrum-Zone) auseinanderdruecken, bis nichts mehr ueberlappt. Die gerade
+// abgelegte Karte (fixedId) bleibt liegen — der Besucher hat sie bewusst
+// dort platziert.
+function relaxAll(layout, dims, fixedId) {
+  const ids = Object.keys(layout)
+  const p = Object.fromEntries(ids.map((i) => [i, { x: layout[i].x, y: layout[i].y }]))
+  const zone = centerZone(dims)
+  const clamp = (q) => {
+    q.x = Math.max(0, Math.min(dims.w - CARD_W, q.x))
+    q.y = Math.max(0, Math.min(dims.h - CARD_H, q.y))
+  }
+  for (let iter = 0; iter < 30; iter++) {
+    let pushed = false
+    // Karte vs. Zone
+    for (const id of ids) {
+      if (id === fixedId) continue
+      const q = p[id]
+      const ox = Math.min(q.x + CARD_W + GAP, zone.x + zone.w + GAP) - Math.max(q.x - GAP, zone.x - GAP)
+      const oy = Math.min(q.y + CARD_H + GAP, zone.y + zone.h + GAP) - Math.max(q.y - GAP, zone.y - GAP)
+      if (ox > 0 && oy > 0) {
+        if (ox < oy) q.x += q.x + CARD_W / 2 < zone.x + zone.w / 2 ? -ox : ox
+        else q.y += q.y + CARD_H / 2 < zone.y + zone.h / 2 ? -oy : oy
+        clamp(q)
+        pushed = true
+      }
+    }
+    // Karte vs. Karte
+    for (let i = 0; i < ids.length; i++) {
+      for (let j = i + 1; j < ids.length; j++) {
+        const a = p[ids[i]]
+        const b = p[ids[j]]
+        const ox = Math.min(a.x + CARD_W + GAP, b.x + CARD_W + GAP) - Math.max(a.x - GAP, b.x - GAP)
+        const oy = Math.min(a.y + CARD_H + GAP, b.y + CARD_H + GAP) - Math.max(a.y - GAP, b.y - GAP)
+        if (ox <= 0 || oy <= 0) continue
+        const aFixed = ids[i] === fixedId
+        const bFixed = ids[j] === fixedId
+        if (ox < oy) {
+          const dir = a.x < b.x ? 1 : -1
+          if (aFixed) b.x += dir * ox
+          else if (bFixed) a.x -= dir * ox
+          else {
+            a.x -= (dir * ox) / 2
+            b.x += (dir * ox) / 2
+          }
+        } else {
+          const dir = a.y < b.y ? 1 : -1
+          if (aFixed) b.y += dir * oy
+          else if (bFixed) a.y -= dir * oy
+          else {
+            a.y -= (dir * oy) / 2
+            b.y += (dir * oy) / 2
+          }
+        }
+        clamp(a)
+        clamp(b)
+        pushed = true
+      }
+    }
+    if (!pushed) break
+  }
+
+  // Restueberlappungen (Clamp-Oszillation an Raendern, volle Buehne):
+  // deterministisch aufloesen — jede noch kollidierende Karte bekommt per
+  // Rastersuche den naechstgelegenen garantiert freien Platz.
+  const freeAgainst = (q, selfId) => {
+    const obs = [zone, ...ids.filter((k) => k !== selfId).map((k) => ({ x: p[k].x, y: p[k].y, w: CARD_W, h: CARD_H }))]
+    return obs.every(
+      (o) => q.x + CARD_W + GAP <= o.x || o.x + (o.w || CARD_W) + GAP <= q.x || q.y + CARD_H + GAP <= o.y || o.y + (o.h || CARD_H) + GAP <= q.y
+    )
+  }
+  for (const id of ids) {
+    if (id === fixedId || freeAgainst(p[id], id)) continue
+    let best = null
+    for (let gx = 0; gx <= dims.w - CARD_W; gx += 40) {
+      for (let gy = 0; gy <= dims.h - CARD_H; gy += 40) {
+        if (!freeAgainst({ x: gx, y: gy }, id)) continue
+        const d = (gx - p[id].x) ** 2 + (gy - p[id].y) ** 2
+        if (!best || d < best.d) best = { x: gx, y: gy, d }
+      }
+    }
+    if (best) p[id] = { x: best.x, y: best.y }
+  }
+  return p
+}
+
 // Karte, die am Drop-Punkt am staerksten ueberlappt wird (fuer Platztausch).
 function mostOverlappedCard(id, pos, positions) {
   let best = null
@@ -279,36 +395,39 @@ export default function RobbeversumStage({ focus, flightMode = 'camera', hubHidd
 
   function onCardMoved(id, pos, release) {
     if (!release) {
+      // Waehrend des Ziehens: gezogene Karte folgt dem Finger, die anderen
+      // weichen ihr live aus (weiche Fluchtbewegung ueber die CSS-Transition).
+      const dodged = dodgeOthers(id, pos, positions, dims)
       setLayouts((cur) => ({
         ...cur,
-        [fit.orientation]: { ...cur[fit.orientation], [id]: { x: pos.x, y: pos.y } },
+        [fit.orientation]: { ...cur[fit.orientation], ...dodged, [id]: { x: pos.x, y: pos.y } },
       }))
       return
     }
-    // Loslassen: aus Ueberlappungen herausdruecken. Findet sich auf der
-    // vollen Buehne kein freier Platz → Platztausch mit der getroffenen
-    // Karte (wie beim App-Icons-Sortieren): sie weicht auf den frei
-    // gewordenen Ursprungsplatz aus.
-    const updates = {}
+    // Loslassen: gezogene Karte aus Rest-Ueberlappungen druecken; findet
+    // sich gar kein Platz → Platztausch mit der getroffenen Karte. Danach
+    // eine globale Entspannung, damit auch ausgewichene Karten sauber liegen.
+    const base = Object.fromEntries(Object.entries(positions).map(([k, v]) => [k, { x: v.x, y: v.y }]))
     const resolved = resolveCollisions(id, pos, positions, dims)
     if (resolved.resolved) {
-      updates[id] = { x: resolved.x, y: resolved.y }
+      base[id] = { x: resolved.x, y: resolved.y }
     } else {
       const hitId = mostOverlappedCard(id, pos, positions)
       if (hitId && release.origin) {
-        updates[id] = { x: positions[hitId].x, y: positions[hitId].y }
-        updates[hitId] = { x: release.origin.x, y: release.origin.y }
+        base[id] = { x: positions[hitId].x, y: positions[hitId].y }
+        base[hitId] = { x: release.origin.x, y: release.origin.y }
       } else {
-        updates[id] = { x: release.origin?.x ?? resolved.x, y: release.origin?.y ?? resolved.y }
+        base[id] = { x: release.origin?.x ?? resolved.x, y: release.origin?.y ?? resolved.y }
       }
     }
+    const relaxed = relaxAll(base, dims, id)
     setLayouts((cur) => ({
       ...cur,
-      [fit.orientation]: { ...cur[fit.orientation], ...updates },
+      [fit.orientation]: { ...cur[fit.orientation], ...relaxed },
     }))
     // DAUERHAFT speichern nur im Layout-Modus — Besucher-Schiebereien sind
     // temporaer und enden mit dem Session-Reset.
-    if (editMode) for (const [uid, upos] of Object.entries(updates)) saveLayoutPos(uid, upos, fit.orientation)
+    if (editMode) for (const [uid, upos] of Object.entries(relaxed)) saveLayoutPos(uid, upos, fit.orientation)
   }
 
   const cam = focusToCamera(focus)

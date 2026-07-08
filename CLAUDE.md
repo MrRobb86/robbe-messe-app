@@ -60,10 +60,14 @@ src/
   (`sendSessionEnd`) — nicht entfernen, daraus entstehen die Lead-Hinweise.
 - **Einstellungsseite:** 5× schneller Tap aufs Logo → PIN (`VITE_ADMIN_PIN`, Default
   2468) → Telefon/Termin-URL/Idle-Zeiten/Layout-Modus. Overrides in localStorage.
-- **Hub-Layout / Ziehen:** JEDER darf Karten frei ziehen (Drag ab 12 px Bewegung,
-  Tap ohne Bewegung öffnet). Beim Loslassen: Abstoßen (GAP 36 px — bewusst größer
-  als der kombinierte Schwebe-Drift 2×14 px), Zentrum-Zone bleibt frei; auf voller
-  Bühne Platztausch mit der getroffenen Karte. Besucher-Verschiebungen sind
+- **Hub-Layout / Ziehen:** JEDER darf Karten frei ziehen — gedrückt halten und
+  bewegen, Drag ab 12 px (Tap ohne Bewegung öffnet). WÄHREND des Ziehens weichen
+  die anderen Karten live aus (dodgeOthers + 300ms-left/top-Transition). Beim
+  Loslassen: Abstoßen (GAP 36 px — größer als der kombinierte Schwebe-Drift
+  2×14 px), globale Entspannung (relaxAll, mit Rastersuche-Fallback gegen
+  Rand-Oszillation), Zentrum-Zone bleibt frei, auf voller Bühne Platztausch.
+  Funktioniert in Quer- UND Hochformat (Hochformat-Wortmarke sitzt bei y 430,
+  damit oberhalb Platz für eine Karte ist). Besucher-Verschiebungen sind
   temporär (Session-Reset stellt Ordnung her); DAUERHAFT speichert nur der
   Layout-Modus der Einstellungen (`rq_layout` / `rq_layout_portrait`).
 
