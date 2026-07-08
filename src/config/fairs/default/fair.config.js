@@ -39,6 +39,10 @@ export const fairConfig = {
 
   urls: {
     website: 'https://robbe-consulting.de/',
+    // Unternehmens-KI: OpenWebUI-Oberflaeche direkt eingebettet (kein API-Key,
+    // keine eigene Chat-UI). Florian loggt sich morgens 1× ein, danach haelt
+    // die Session per Cookie den ganzen Messetag (Fully: Cookies nicht loeschen).
+    wissensKi: 'https://ki.robbe-consulting.de',
     // Kurzlink fuer QR-Codes und Mails:
     termin: 'https://calendar.app.google/CfdmPcBowRim2uJe7',
     // Embed-Variante (?gv=true) — die EINZIGE iframe-taugliche Form der

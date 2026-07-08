@@ -11,8 +11,10 @@ Commits imperativ mit Phasen-Präfix (`P2: …`).
 
 1. **Kein eigenes Backend.** Alle Serverlogik in n8n (Bots, Lead-Flow → Odoo) bzw.
    Open WebUI (Unternehmens-KI). Die App macht nur fetch/POST.
-2. **Open-WebUI-UI wird NICHT eingebettet** — eigener Chat gegen `/api/chat/completions`
-   (SSE), Auth über dedizierten Kiosk-API-Key (`.env`, nie committen, nach Messe rotieren).
+2. **Unternehmens-KI = OpenWebUI-Oberfläche als iframe** (ki.robbe-consulting.de
+   sendet keine iframe-Sperre). Florian loggt sich morgens 1× ein, Session hält
+   per Cookie. Kein API-Key. `src/api/openwebui.js` (streamChat) bleibt ungenutzt
+   im Repo als Fallback, falls doch ein eigener API-Chat gewünscht wird.
 3. **DSGVO-Session-Reset ist heilig:** Reset läuft über `key={sessionId}`-Remount
    (App.jsx) + localStorage-Wipe. Whitelist überlebender Keys NUR über
    `PERSISTENT_KEYS` in `src/kiosk/settings.js` erweitern. Der nächste Besucher darf

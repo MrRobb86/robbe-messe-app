@@ -46,9 +46,12 @@ Android-Display (Fully Kiosk)
        ├── Website-Modul       → iframe https://robbe-consulting.de
        │                          (Website sendet seit 07/2026 CSP frame-ancestors
        │                           für messe.robbe-consulting.de + localhost:5173)
-       ├── Unternehmens-KI     → EIGENER Chat-Screen gegen Open WebUI
-       │                          POST /api/chat/completions (SSE-Streaming)
-       │                          https://ki.robbe-consulting.de, Kiosk-API-Key
+       ├── Unternehmens-KI     → OpenWebUI-Oberfläche direkt als iframe
+       │                          https://ki.robbe-consulting.de (sendet keine
+       │                          iframe-Sperre). Morgen-Login durch Florian,
+       │                          Session hält per Cookie. KEIN API-Key nötig.
+       │                          (openwebui.js/streamChat bleibt ungenutzt im
+       │                          Repo — Fallback, falls doch API-Chat gewünscht)
        ├── Robbe AI-Copilot    → Beschreibung + „Zum Portal"-Button, iframe
        │                          https://robbe-consulting.ai.tool.center/library/apps
        ├── Website-Bot-Demo    → n8n-Webhook /webhook/robbe-chatbot (Produktiv-Bot!)
@@ -107,8 +110,7 @@ Feld). Einbettbar ist NUR die offizielle Embed-Form
 
 | System | URL | Status |
 |---|---|---|
-| Open WebUI (Unternehmens-KI) | https://ki.robbe-consulting.de | läuft; Kiosk-User + API-Key FEHLEN noch |
-| Workspace-Modell | `robbe-unternehmenswissen` (ANNAHME) | echte Modell-ID klären |
+| Open WebUI (Unternehmens-KI) | https://ki.robbe-consulting.de | läuft, als iframe eingebettet (kein API-Key nötig). Florian loggt sich morgens 1× ein; Fully: Cookies nicht löschen |
 | Robbe AI-Copilot | https://robbe-consulting.ai.tool.center/library/apps | einbettbar (keine frame-ancestors-Sperre); Login-Screen — Demo-User beim Anbieter (aven8/tool.center) klären |
 | n8n | https://n8n.srv1047901.hstgr.cloud | läuft; Workflows `messe-bot` + `messe-lead` FEHLEN (Vorlage: VOM-FASS-Workflow, JSON in `~/Downloads/Claude/`) |
 | Website | https://robbe-consulting.de | GitHub MrRobb86/MrRobb86.github.io → Push auf main deployt automatisch per FTPS zu IONOS. frame-ancestors seit 07/2026 gesetzt. Lokaler Klon: `~/Claude/Projects/robbe-website` |
@@ -122,8 +124,9 @@ Feld). Einbettbar ist NUR die offizielle Embed-Form
    crm.lead per JSON-RPC → Danke-Mail mit Kontaktdaten + Buchungslink → Respond).
    NEU: Zweig für `type:"card"` (Visitenkarten-Scan) — Vision-Modell extrahiert
    Name/Firma/Kontakt aus den Bildern → Odoo-Lead + Mail an Florian.
-2. **OWUI-Kiosk-User** anlegen (keine Adminrechte, nur ein Modell), API-Key in
-   `.env` (`VITE_OWUI_KIOSK_KEY`), echte Modell-ID eintragen, Streaming live testen.
+2. **Unternehmens-KI:** morgens am Stand einmal in ki.robbe-consulting.de
+   einloggen (wie Copilot). Kein API-Key/Kiosk-User mehr nötig — die
+   OpenWebUI-Oberfläche ist direkt eingebettet.
 3. **Copilot-Demo-Zugang:** Auto-Login in die fremdgehostete Instanz
    (aven8/tool.center) ist aus der App heraus NICHT möglich (Cross-Origin —
    wir können in deren Login-Formular nichts eintragen). Realistische Wege:

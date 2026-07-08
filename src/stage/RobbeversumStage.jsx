@@ -89,15 +89,11 @@ function HubCard({ mod, pos, index, editMode, fit, dims, onOpen, onMoved }) {
   const drag = useRef(null)
   const [dragging, setDragging] = useState(false)
 
-  // Sichtbares Schweben: pro Karte eigene Amplitude/Dauer (transform-only,
-  // 60fps). Waehrend des Ziehens aus, sonst "zittert" die Karte am Finger.
-  const driftStyle = dragging
-    ? { animation: 'none', transition: 'none' }
-    : {
-        '--drift-dur': `${7 + (index % 5)}s`,
-        '--drift-x': `${((index * 7) % 3) * 12 - 12}px`,
-        '--drift-y': `${((index * 5) % 3) * 14 - 14}px`,
-      }
+  // Waehrend des Ziehens folgt die Karte hart dem Finger (keine Nachzieh-
+  // Transition), sonst rastet sie beim Loslassen weich ein. Das "Schweben"
+  // liegt als GEMEINSAME Atembewegung auf .hub-layer (bewegt Linien + Karten
+  // zusammen), damit die Verbindungslinien immer exakt an den Karten sitzen.
+  const driftStyle = dragging ? { transition: 'none' } : undefined
 
   function onPointerDown(e) {
     e.currentTarget.setPointerCapture(e.pointerId)
@@ -446,14 +442,16 @@ export default function RobbeversumStage({ focus, flightMode = 'camera', hubHidd
           className={`stage-camera ${flightClass}`}
           style={{ transform: `translate(${tx}px, ${ty}px) scale(${cam.scale})` }}
         >
-          <ConstellationLines positions={positions} dims={dims} />
           <div className="stage-center" style={{ left: dims.center.x, top: dims.center.y }}>
             <p className="eyebrow">{config.kontakt.firma}</p>
             <h1>
               ROBBEVERSUM<span style={{ color: 'var(--accent)' }}>.</span>
             </h1>
           </div>
+          {/* Linien UND Karten teilen sich denselben "breathing"-Wrapper, damit
+              das sanfte Schweben sie GEMEINSAM bewegt — kein Versatz mehr. */}
           <div className={`hub-layer ${hubHidden ? 'hub-layer--hidden' : ''}`}>
+            <ConstellationLines positions={positions} dims={dims} />
             {modules.map((m, i) => (
               <HubCard
                 key={m.id}

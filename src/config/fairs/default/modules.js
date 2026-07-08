@@ -17,24 +17,15 @@ export const modules = [
   },
   {
     id: 'wissenski',
-    kind: 'kioskChat',
+    kind: 'iframe',
     eyebrow: '02 — LIVE-DEMO',
     title: 'Unternehmens-KI',
     teaser: 'Frag einfach unser Firmenwissen — sie antwortet sofort.',
     hubPosition: { x: 1400, y: 110, rot: 1.8 },
     botTeaser: 'Soll ich dir zeigen, was eine eigene Unternehmens-KI kann?',
-    payload: {
-      backend: 'openwebui',
-      suggestions: [
-        'Wie läuft ein KI-Strategie-Workshop ab?',
-        'Was kostet eine eigene Unternehmens-KI?',
-        'Welche Schulungen bietet ihr an?',
-        'Wie startet mein Unternehmen mit KI?',
-      ],
-      greeting:
-        'Hallo! Ich bin die Unternehmens-KI von Robbe Sales & AI Consulting — ' +
-        'gefüttert mit unserem kompletten Firmenwissen. Frag mich einfach.',
-    },
+    // Eingebettete OpenWebUI-Oberflaeche (ki.robbe-consulting.de). Morgen-Login
+    // durch Florian, danach direkt nutzbar. Kein API-Key, kein eigener Chat.
+    payload: { urlKey: 'wissensKi', frameLabel: 'UNTERNEHMENS-KI — ki.robbe-consulting.de' },
   },
   {
     id: 'copilot',
