@@ -66,6 +66,11 @@ src/
   (`sendSessionEnd`) — nicht entfernen, daraus entstehen die Lead-Hinweise.
 - **Einstellungsseite:** 5× schneller Tap aufs Logo → PIN (`VITE_ADMIN_PIN`, Default
   2468) → Telefon/Termin-URL/Idle-Zeiten/Layout-Modus. Overrides in localStorage.
+- **Selbst-Update:** SW-Modus `prompt` (vite.config) + registerSW in main.jsx
+  (Update-Check alle 5 Min, Flag `__swUpdateBereit`); KioskSession aktiviert +
+  reloadet im Attract-Mode. Nach einem Deploy holt sich der Kiosk die neue
+  Version also selbst — nie `autoUpdate` zurückstellen, sonst laufen Seiten
+  bis zum manuellen Doppel-Reload mit altem Asset-Cache.
 - **Hub-Layout / Ziehen:** JEDER darf Karten frei ziehen — gedrückt halten und
   bewegen, Drag ab 12 px (Tap ohne Bewegung öffnet). Die gesamte Kollisionslogik
   ist EINE Funktion `separate(layout, dims, fixedId)` in RobbeversumStage.jsx:
