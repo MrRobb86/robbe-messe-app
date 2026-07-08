@@ -24,10 +24,8 @@ function AngeboteFly({ scene }) {
       <h2 className="attract-headline" style={{ fontSize: 'clamp(48px, 3.6vw, 72px)' }}>
         Was wir anbieten<span className="accent-em">.</span>
       </h2>
+      {/* Nur Titel + Kurzbeschreibung — bewusst keine Nummerierung. */}
       <div className="attract-angebot" key={idx} style={{ '--fly-dur': `${scene.perItemMs}ms` }}>
-        <span className="attract-angebot__nr">
-          {String(idx + 1).padStart(2, '0')} / {String(cards.length).padStart(2, '0')} — {c.eyebrow}
-        </span>
         <h3 className="attract-angebot__title">{c.title}</h3>
         <p className="attract-angebot__text">{c.text}</p>
       </div>

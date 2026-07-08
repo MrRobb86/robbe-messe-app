@@ -111,15 +111,8 @@
   91%  { opacity: 1; transform: translateX(0) rotate(0deg); }
   100% { opacity: 0; transform: translateX(-340px) rotate(-1.2deg); }
 }
-.attract-angebot__nr {
-  font-family: var(--font-mono);
-  font-size: 19px;
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  opacity: 0.85;
-}
 .attract-angebot__title {
-  margin: 12px 0 14px;
+  margin: 0 0 14px;
   font-family: var(--font-display);
   font-weight: 800;
   font-size: clamp(44px, 3.6vw, 64px);

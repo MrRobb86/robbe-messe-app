@@ -19,8 +19,8 @@ export const attractScenes = [
     id: 'angebote',
     type: 'angebote',
     focusModule: 'angebote',
-    perItemMs: 5500,
-    durationMs: 8 * 5500,
+    perItemMs: 5000, // 5 Sekunden pro Angebot (Kundenwunsch)
+    durationMs: 8 * 5000,
     headline: 'Was wir anbieten',
   },
   {
