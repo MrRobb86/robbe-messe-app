@@ -21,7 +21,9 @@ function AngeboteFly({ scene }) {
   if (!c) return null
   return (
     <div className="attract-scene">
-      <h2 className="attract-headline" style={{ fontSize: 'clamp(48px, 3.6vw, 72px)' }}>
+      {/* Volle Attract-Headline-Groesse (wie "Schulung." in der Worte-Szene)
+          + maximale Schriftstaerke — Kundenwunsch: gross, dick, fett. */}
+      <h2 className="attract-headline" style={{ fontWeight: 900 }}>
         Was wir anbieten<span className="accent-em">.</span>
       </h2>
       {/* Nur Titel + Kurzbeschreibung — bewusst keine Nummerierung. */}
