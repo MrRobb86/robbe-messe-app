@@ -302,7 +302,7 @@ export const modules = [
     kind: 'projekte',
     eyebrow: '08 — UNSERE PROJEKTE',
     title: 'Unsere Projekte',
-    teaser: 'Software-Projekte aus der Praxis — live zum Anfassen.',
+    teaser: 'Vier Software-Projekte aus der Praxis — live zum Anfassen.',
     hubPosition: { x: 980, y: 730, rot: -0.6 },
     botTeaser: 'Frag mich, wie so ein Projekt bei euch aussehen könnte.',
     payload: {
@@ -374,6 +374,27 @@ export const modules = [
               { title: 'ERP-Anbindung vorbereitet', text: 'Adapter für MyFactory, Messaging und Wissenssuche — austauschbar, produktiv erweiterbar.' },
             ],
             fakten: 'Kunde: HOLP · Web-App (React) + API + KI-Wissenssuche · live seit 08/2026',
+          },
+        },
+        {
+          id: 'image',
+          eyebrow: 'ARBEITSSICHERHEIT · IMAGE CONSULTING',
+          title: 'Arbeitssicherheits-Plattform',
+          text: 'Begehungen, ASA-Protokolle, Maßnahmenpläne und Gefährdungsbeurteilungen — erfasst per Handy und Diktat, fertig als revisionssicherer Bericht.',
+          liveUrl: '', // noch kein Deployment (Server + Demo-Subdomain offen) → später openMode 'tab'
+          frameLabel: 'IMAGE ARBEITSSICHERHEIT — LIVE-DEMO',
+          detail: {
+            intro:
+              'Die Plattform für Sicherheitsfachkräfte und ihre Firmenkunden: Vor Ort werden Begehungen, ASA-Sitzungen und Prüfungen per Wizard oder Handy-App erfasst — mit Foto und Diktat. Die KI transkribiert und formuliert daraus den Berichtsentwurf mit den passenden Textbausteinen; heraus kommen revisionssichere PDFs im Kundenlayout. Über das Kundenportal sehen Firmenkunden ihre Berichte, offenen Maßnahmen und Gefährdungsbeurteilungen und kommunizieren direkt mit der Fachkraft.',
+            punkte: [
+              { title: 'Berichte in Minuten', text: 'Begehung, ASA-Protokoll, Maßnahmenplan, Prüfbericht — Wizard am Rechner oder Handy-App vor Ort, offlinefähig.' },
+              { title: 'Diktat wird Fachtext', text: 'Sprachnotiz oder Sitzungsaufnahme → KI-Entwurf mit Verweisen auf 290 geprüfte Textbausteine (EU-Hosting).' },
+              { title: 'Gefährdungsbeurteilung', text: 'Katalog mit 68 Prüfpunkten, Risikomatrix, daraus abgeleitete Betriebsanweisungen.' },
+              { title: 'Maßnahmen & Fristen', text: 'Aufgaben-Center mit Erinnerungen, Fristverlängerung per Antrag — nichts bleibt liegen.' },
+              { title: 'Kundenportal', text: 'Firmenkunden und deren Mitarbeiter sehen ihre Berichte, Maßnahmen und Unterweisungen — mit Rollen von Geschäftsführung bis Mitarbeiter.' },
+              { title: 'Revisionssicher & DSGVO', text: 'PDF/Excel im Kundenlayout mit Revisionen, jede KI-Nutzung protokolliert, Daten in der EU.' },
+            ],
+            fakten: 'Kunde: IMAGe Consulting · Web-App (Laravel) + Handy-App + KI-Transkription + Kundenportal · Deployment in Vorbereitung',
           },
         },
       ],
