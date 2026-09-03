@@ -62,6 +62,13 @@ src/
   relative/fixed sein, sonst landet die Hit-Area falsch.
 - **Bot-Bubble unten LINKS** (über dem Zurück-Button), Telefonnummer unten rechts —
   Kundenwunsch, nicht tauschen.
+- **Modul „Unsere Projekte" (kind `projekte`):** 3 Software-Projekte (GMB Wüstenberg,
+  Patzig Dach, HOLP Serviceportal) als Detailseiten; `liveUrl` pro Projekt = einbettbare
+  Demo-Instanz (HTTPS, ohne Login-Hürde, ohne X-Frame-Options). Leer = „Live-Demo wird
+  eingerichtet". Stand 09/2026: alle drei Live-Systeme haben Login + Passwortschutz
+  (GMB zusätzlich `X-Frame-Options`, Patzig nur HTTP) → Demo-Instanzen sind offen.
+- **Messe-Bot-Webhook:** zeigt vorerst auf den PRODUKTIVEN `robbe-chatbot`-Webhook,
+  weil `messe-bot` in n8n nicht existiert (404). Bei eigenem Messe-Workflow zurückstellen.
 - **Chat-Transkripte:** n8n-Chats melden ihr Transkript im Unmount-Cleanup
   (`sendSessionEnd`) — nicht entfernen, daraus entstehen die Lead-Hinweise.
 - **Einstellungsseite:** 5× schneller Tap aufs Logo → PIN (`VITE_ADMIN_PIN`, Default

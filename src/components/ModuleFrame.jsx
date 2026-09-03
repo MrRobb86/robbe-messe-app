@@ -9,7 +9,7 @@ export default function ModuleFrame({ mod, closing, onBack, children, hideTitle 
   // iframe-Viewport nicht mit der sichtbaren Flaeche ueberein → die externe
   // App rendert zu gross/klein und laesst weisse Raender. Externe Apps sind
   // selbst responsiv und sollen die echte Browser-Aufloesung sehen.
-  const nativeRes = mod.kind === 'iframe' || mod.kind === 'portal'
+  const nativeRes = mod.kind === 'iframe' || mod.kind === 'portal' || mod.kind === 'projekte'
   return (
     <>
       <div

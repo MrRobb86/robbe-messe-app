@@ -31,7 +31,10 @@ const DIMS = {
   // Hochformat: Wortmarke bewusst so tief (y 430), dass OBERHALB eine
   // Karte Platz hat (270 + GAP + Zone) — Kundenwunsch: auch ueber dem
   // RobbeVersum darf geparkt werden.
-  portrait: { w: 1080, h: 1920, center: { x: 540, y: 430 } },
+  // h 2200 statt 1920: mit 9 Karten braucht das 2-Spalten-Raster 5 Reihen
+  // (560 + 4×330 + 270 = 2150). Auf einem 9:16-Display fittet die Buehne
+  // per contain (~87 %), schmale Raender links/rechts — bewusst in Kauf genommen.
+  portrait: { w: 1080, h: 2200, center: { x: 540, y: 430 } },
 }
 
 // Schutzzone um die Wortmarke — hier parkt keine Karte.

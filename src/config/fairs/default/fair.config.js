@@ -32,7 +32,10 @@ export const fairConfig = {
   },
 
   webhooks: {
-    messeBot: import.meta.env.VITE_N8N_MESSE_BOT_URL || 'https://n8n.srv1047901.hstgr.cloud/webhook/messe-bot',
+    // Messe-Bot nutzt vorerst den PRODUKTIVEN Website-Chatbot-Webhook: der
+    // eigene 'messe-bot'-Workflow existiert in n8n noch nicht (404). Sobald er
+    // steht, hier auf .../webhook/messe-bot zurueckstellen.
+    messeBot: import.meta.env.VITE_N8N_MESSE_BOT_URL || 'https://n8n.srv1047901.hstgr.cloud/webhook/robbe-chatbot',
     websiteBot: import.meta.env.VITE_N8N_WEBSITE_BOT_URL || 'https://n8n.srv1047901.hstgr.cloud/webhook/robbe-chatbot',
     lead: import.meta.env.VITE_N8N_LEAD_URL || 'https://n8n.srv1047901.hstgr.cloud/webhook/messe-lead',
   },

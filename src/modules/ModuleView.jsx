@@ -133,6 +133,74 @@ function Portal({ payload }) {
   )
 }
 
+// "Unsere Projekte": Uebersicht der Software-Projekte → Detailseite mit
+// Beschreibung, Punkten und — sobald eine einbettbare Demo-Instanz existiert
+// (liveUrl) — dem roten "Live ausprobieren"-Button, der die App im
+// Demo-Rahmen oeffnet. Ohne liveUrl: ehrlicher Hinweis statt totem Button.
+function Projekte({ payload }) {
+  const { openModule } = useKiosk()
+  const [current, setCurrent] = useState(null)
+  const [live, setLive] = useState(false)
+
+  if (current && live && current.liveUrl) {
+    return (
+      <>
+        <IframeModule payload={{ url: current.liveUrl, frameLabel: current.frameLabel }} />
+        <button className="chip pressable" style={{ alignSelf: 'flex-start', marginTop: 16 }} onClick={() => setLive(false)}>
+          ← Zur Beschreibung
+        </button>
+      </>
+    )
+  }
+
+  if (current) {
+    return (
+      <div className="detail scrollable">
+        <button className="chip pressable detail__back" onClick={() => setCurrent(null)}>
+          ← Alle Projekte
+        </button>
+        <p className="eyebrow">{current.eyebrow}</p>
+        <h3 className="detail__title">{current.title}</h3>
+        <p className="detail__intro">{current.detail.intro}</p>
+        <div className="cards-grid" style={{ overflow: 'visible' }}>
+          {current.detail.punkte.map((p) => (
+            <div key={p.title} className="content-card content-card--compact">
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </div>
+          ))}
+        </div>
+        {current.detail.fakten && <p className="detail__fakten">{current.detail.fakten}</p>}
+        <div className="detail__cta-row" style={{ gap: 16, flexWrap: 'wrap' }}>
+          {current.liveUrl ? (
+            <button className="pill pressable lead-red-cta detail__cta" onClick={() => setLive(true)}>
+              Live ausprobieren →
+            </button>
+          ) : (
+            <span className="detail__fakten" style={{ alignSelf: 'center' }}>Live-Demo wird eingerichtet</span>
+          )}
+          <button className="pill pressable detail__cta" onClick={() => openModule('kontakt')}>
+            So etwas für mein Unternehmen →
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="cards-grid scrollable">
+      {payload.projects.map((p) => (
+        <button key={p.id} className="content-card content-card--tappable pressable" onClick={() => setCurrent(p)}>
+          <p className="eyebrow">{p.eyebrow}</p>
+          <h3>{p.title}</h3>
+          <p>{p.text}</p>
+          <span className="content-card__more">{p.liveUrl ? 'Ansehen & ausprobieren →' : 'Mehr erfahren →'}</span>
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export default function ModuleView({ mod }) {
   switch (mod.kind) {
     case 'iframe':
@@ -149,6 +217,8 @@ export default function ModuleView({ mod }) {
       return <ContentCards cards={mod.payload.cards} />
     case 'team':
       return <TeamCards members={mod.payload.members} />
+    case 'projekte':
+      return <Projekte payload={mod.payload} />
     case 'lead':
       return <LeadModule />
     default:

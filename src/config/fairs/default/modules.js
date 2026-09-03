@@ -33,7 +33,7 @@ export const modules = [
     eyebrow: '03 — PRODUKT',
     title: 'Robbe AI-Copilot',
     teaser: 'Das KI-Portal für dein Team — ausprobieren erlaubt.',
-    hubPosition: { x: 230, y: 720, rot: 1.2 },
+    hubPosition: { x: 60, y: 730, rot: 1.2 },
     botTeaser: 'Frag mich, wie der Robbe AI-Copilot in deinem Team arbeitet.',
     payload: {
       // Ausfuehrliche Portal-Beschreibung + "Zum Portal"-Button.
@@ -92,7 +92,7 @@ export const modules = [
     eyebrow: '05 — SO ARBEITEN WIR',
     title: 'Wie wir arbeiten',
     teaser: 'Unser 12-Schritte-Plan — von der Analyse bis zur Verankerung.',
-    hubPosition: { x: 1330, y: 730, rot: -1.4 },
+    hubPosition: { x: 1440, y: 730, rot: -1.4 },
     botTeaser: 'Frag mich, wie unser 12-Schritte-Plan bei euch ablaufen würde.',
     payload: {
       // Der 12-Schritte-Plan von robbe-consulting.de/ki-beratung (Stand 07/2026).
@@ -277,7 +277,7 @@ export const modules = [
     eyebrow: '07 — MENSCHEN',
     title: 'Das Team',
     teaser: 'Menschen, keine Buzzwords.',
-    hubPosition: { x: 790, y: 700, rot: 0.9 },
+    hubPosition: { x: 520, y: 730, rot: 0.9 },
     botTeaser: 'Frag mich, wer hinter Robbe Consulting steckt.',
     payload: {
       members: [
@@ -288,10 +288,89 @@ export const modules = [
           image: '/fairs/default/team-florian.png',
         },
         {
-          name: 'Ghiath',
-          role: 'KI-Workflow-Spezialist & Consultant',
-          text: 'Master IT-Ingenieurwesen mit Machine-Learning-Spezialisierung (KIT Karlsruhe). Entwickelt KI-Workflows und setzt sie gemeinsam mit Kunden um.',
-          image: '/fairs/default/team-ghiath.png',
+          // Partner seit 08/2026 (Cyrobyte). Text = Entwurf, von Florian freizugeben.
+          name: 'Mohammad Yousif',
+          role: 'Partner · Softwareentwicklung & Prozessautomatisierung',
+          text: 'Gründer von Cyrobyte und unser Partner für Softwareentwicklung und Prozessautomatisierung. Er verwandelt eure Abläufe in maßgeschneiderte Web-Apps und Automatisierungen — von der ersten Analyse bis zur fertigen Lösung.',
+          image: '/fairs/default/team-mohammad.png',
+        },
+      ],
+    },
+  },
+  {
+    id: 'projekte',
+    kind: 'projekte',
+    eyebrow: '08 — UNSERE PROJEKTE',
+    title: 'Unsere Projekte',
+    teaser: 'Drei Software-Projekte aus der Praxis — live zum Anfassen.',
+    hubPosition: { x: 980, y: 730, rot: -0.6 },
+    botTeaser: 'Frag mich, wie so ein Projekt bei euch aussehen könnte.',
+    payload: {
+      // liveUrl: einbettbare Demo-Instanz (HTTPS, ohne Login-Huerde). Leer =
+      // Demo wird noch eingerichtet → Detailseite zeigt Beschreibung + Hinweis.
+      projects: [
+        {
+          id: 'gmb',
+          eyebrow: 'LANDTECHNIK · WÜSTENBERG',
+          title: 'Gebrauchtmaschinen-Bewertung',
+          text: 'KI-gestützte Bewertung gebrauchter Land- und Baumaschinen — mit Marktrecherche in Minuten statt Stunden.',
+          liveUrl: '',
+          frameLabel: 'GEBRAUCHTMASCHINEN-BEWERTUNG — LIVE-DEMO',
+          detail: {
+            intro:
+              'Verkäufer fotografieren das Typenschild, die KI liest die Maschinendaten aus, recherchiert aktuelle Marktpreise vergleichbarer Angebote und erstellt eine belastbare Bewertung — als PDF und Excel, direkt aus der App.',
+            punkte: [
+              { title: 'Typenschild-OCR', text: 'Foto hochladen — Hersteller, Modell, Baujahr und Betriebsstunden werden automatisch erkannt.' },
+              { title: 'Marktbewertung per KI', text: 'Automatische Recherche vergleichbarer Angebote am Markt, Preisspanne und Empfehlung.' },
+              { title: 'Produktkatalog', text: 'Über 120 Maschinengruppen hinterlegt — die Bewertung kennt die Branche.' },
+              { title: 'PDF & Excel', text: 'Bewertungsbericht auf Knopfdruck — für Kunde, Vertrieb und Ankauf.' },
+              { title: 'Rollen & Rechte', text: 'Admin, Bewerter, Verkäufer — jeder sieht, was er braucht.' },
+              { title: 'Selbst gehostet', text: 'Läuft auf eigenem Server, Daten bleiben im Haus. Automatisierung über n8n.' },
+            ],
+            fakten: 'Kunde: Wüstenberg Landtechnik · Web-App (React) + KI-Workflows (n8n) · Bewertung in Minuten',
+          },
+        },
+        {
+          id: 'patzig',
+          eyebrow: 'DACHDECKER · PATZIG DACH',
+          title: 'Dachwartung & Bautagesbericht',
+          text: 'Vom Schadensfoto per Telegram bis zum Angebot: das komplette Wartungs- und Projektsystem für einen Dachdeckerbetrieb.',
+          liveUrl: '',
+          frameLabel: 'PATZIG DACH-SYSTEM — LIVE-DEMO',
+          detail: {
+            intro:
+              'Die Monteure melden Schadstellen direkt vom Dach per Telegram-Bot — mit Foto und Sprachnotiz. Das System ordnet sie Projekten zu, kalkuliert Reparaturoptionen, erstellt Angebote und Bautagesberichte und behält die Abrechnung im Blick.',
+            punkte: [
+              { title: 'Schadstellen per Telegram', text: 'Foto + Sprachnachricht vom Dach — landet strukturiert im System, ohne Büroarbeit.' },
+              { title: 'Reparaturoptionen & Kalkulation', text: 'Hinterlegte Formeln kalkulieren Aufwand und Preis pro Schadstelle automatisch.' },
+              { title: 'Angebote & Bautagesberichte', text: 'Dokumente entstehen aus den erfassten Daten — kein doppeltes Tippen.' },
+              { title: 'Projekt- & Kundenverwaltung', text: 'Alle Objekte, Kunden, Mitarbeiter und Termine an einem Ort.' },
+              { title: 'Abrechnungslogik', text: 'Wartungsverträge, Einzelaufträge und Nachträge sauber getrennt und nachvollziehbar.' },
+              { title: 'Für den Handwerksbetrieb gebaut', text: 'Bedienbar mit dreckigen Händen auf dem Handy — genau für den Alltag auf der Baustelle.' },
+            ],
+            fakten: 'Kunde: Patzig Dach · Web-App (Vue) + Telegram-Bot + Datenbank · von der Schadstelle bis zur Rechnung',
+          },
+        },
+        {
+          id: 'holp',
+          eyebrow: 'MASCHINENHANDEL · HOLP',
+          title: 'HOLP Serviceportal',
+          text: 'Ein Portal für Händler, Partner und Kunden: Servicefälle, Ersatzteile, Garantie und Angebote — mit KI-Wissensdatenbank.',
+          liveUrl: '',
+          frameLabel: 'HOLP SERVICEPORTAL — LIVE-DEMO',
+          detail: {
+            intro:
+              'Statt Telefon und E-Mail-Pingpong: Händler, Partner und Endkunden melden Servicefälle im Portal, finden Ersatzteile, stellen Garantieanträge und bekommen Angebote — und eine KI-Wissensdatenbank beantwortet technische Fragen sofort aus den Handbüchern.',
+            punkte: [
+              { title: 'Servicefälle digital', text: 'Anlegen, verfolgen, abschließen — mit Historie, Fotos und Status für alle Beteiligten.' },
+              { title: 'Ersatzteile & Angebote', text: 'Teile zur Maschine finden, Angebot anfordern — mit hinterlegten Arbeitswerten.' },
+              { title: 'Garantieanträge', text: 'Strukturiert statt per Formular-Fax: alle Daten vollständig, Bearbeitung nachvollziehbar.' },
+              { title: 'KI-Wissensdatenbank', text: 'Technische Fragen werden aus Handbüchern und Servicewissen beantwortet — Tag und Nacht.' },
+              { title: 'Rollen für jeden Partner', text: 'Händler, Partner, Kunde, Service, Vertrieb, Admin — jeder sieht genau seinen Bereich.' },
+              { title: 'ERP-Anbindung vorbereitet', text: 'Adapter für MyFactory, Messaging und Wissenssuche — austauschbar, produktiv erweiterbar.' },
+            ],
+            fakten: 'Kunde: HOLP · Web-App (React) + API + KI-Wissenssuche · live seit 08/2026',
+          },
         },
       ],
     },
