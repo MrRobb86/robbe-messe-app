@@ -93,6 +93,15 @@ src/
   GAP 36 px (> kombinierter Schwebe-Drift). NIE wieder dodge/resolve/relax/swap
   einführen — das war die Bug-Quelle (State-Inkonsistenz + Hänger).
 
+## Push & Deploy — Stolperfalle GitHub-Konto
+
+Auf dem Mac sind in `gh` mehrere GitHub-Konten angemeldet (u. a. `ghiathnj88`). Ist ein
+fremdes Konto aktiv, schlägt `git push` mit **403** fehl — und `gh run list` zeigt dann
+trügerisch den letzten *alten* erfolgreichen Lauf. Deshalb: Remote-URL trägt den
+Benutzer (`https://MrRobb86@github.com/...`), sodass der gh-Credential-Helper immer
+MrRobb86 nimmt. Nach jedem Push **Live-Bundle mit `dist/index.html` vergleichen**
+(Hash identisch = wirklich deployt), nicht nur auf „success" vertrauen.
+
 ## Entwicklung
 
 ```bash
