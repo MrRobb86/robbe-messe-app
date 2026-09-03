@@ -62,8 +62,8 @@ src/
   relative/fixed sein, sonst landet die Hit-Area falsch.
 - **Bot-Bubble unten LINKS** (über dem Zurück-Button), Telefonnummer unten rechts —
   Kundenwunsch, nicht tauschen.
-- **Modul „Unsere Projekte" (kind `projekte`):** 3 Software-Projekte (GMB Wüstenberg,
-  Patzig Dach, HOLP Serviceportal) als Detailseiten; `liveUrl` pro Projekt = einbettbare
+- **Modul „Unsere Projekte" (kind `projekte`):** Software-Projekte (GMB Wüstenberg,
+  Patzig Dach, HOLP Serviceportal, IMAGe) als Detailseiten. `liveUrl` + `openMode:'tab'` = gehostete App in eigenem Fenster (heutiger Stand); `liveUrl` ohne openMode = einbettbare
   Demo-Instanz (HTTPS, ohne Login-Hürde, ohne X-Frame-Options). Leer = „Live-Demo wird
   eingerichtet". Stand 09/2026: alle drei Live-Systeme haben Login + Passwortschutz
   (GMB zusätzlich `X-Frame-Options`, Patzig nur HTTP) → Demo-Instanzen sind offen.

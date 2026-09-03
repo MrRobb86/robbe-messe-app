@@ -54,6 +54,7 @@ npm run build    # dist/ → per rsync hinter nginx deployen
 - [ ] Deployment: Subdomain messe.robbe-consulting.de hinter nginx
 - [ ] Fully Kiosk: URL-Whitelist (inkl. ai.tool.center, calendar.google.com), Keep Screen On,
       Screensaver AUS, PIN, Scheduled Reload 04:00, **Kamera-Permission erlauben** (Visitenkarten-Scan),
-      **Cookies NICHT automatisch löschen** (Copilot-Login vom Morgen muss den Tag überleben)
+      **Cookies NICHT automatisch löschen** (Copilot-Login vom Morgen muss den Tag überleben),
+      **Popups/neue Tabs erlauben** (Projekt-Buttons „App öffnen" starten HOLP/Patzig in eigenem Fenster)
 - [ ] Morgens am Stand: einmal im Robbe AI-Copilot einloggen (Session hält per Cookie)
 - [ ] 48h-Dauerlauf + Netzabriss-Test + Kamera-Test auf dem Zielgerät

@@ -302,12 +302,14 @@ export const modules = [
     kind: 'projekte',
     eyebrow: '08 — UNSERE PROJEKTE',
     title: 'Unsere Projekte',
-    teaser: 'Drei Software-Projekte aus der Praxis — live zum Anfassen.',
+    teaser: 'Software-Projekte aus der Praxis — live zum Anfassen.',
     hubPosition: { x: 980, y: 730, rot: -0.6 },
     botTeaser: 'Frag mich, wie so ein Projekt bei euch aussehen könnte.',
     payload: {
-      // liveUrl: einbettbare Demo-Instanz (HTTPS, ohne Login-Huerde). Leer =
-      // Demo wird noch eingerichtet → Detailseite zeigt Beschreibung + Hinweis.
+      // liveUrl + openMode:'tab' = gehostete Live-App oeffnet in eigenem Fenster
+      // (Login/Basic-Auth dort, morgens 1x). liveUrl OHNE openMode = einbettbare
+      // Demo-Instanz im iframe (HTTPS, ohne Login-Huerde, ohne X-Frame-Options).
+      // Leer = noch keine erreichbare URL bekannt.
       projects: [
         {
           id: 'gmb',
@@ -335,7 +337,8 @@ export const modules = [
           eyebrow: 'DACHDECKER · PATZIG DACH',
           title: 'Dachwartung & Bautagesbericht',
           text: 'Vom Schadensfoto per Telegram bis zum Angebot: das komplette Wartungs- und Projektsystem für einen Dachdeckerbetrieb.',
-          liveUrl: '',
+          liveUrl: 'http://217.160.192.113/',
+          openMode: 'tab', // nur HTTP + Basic-Auth → nicht einbettbar, eigenes Fenster
           frameLabel: 'PATZIG DACH-SYSTEM — LIVE-DEMO',
           detail: {
             intro:
@@ -356,7 +359,8 @@ export const modules = [
           eyebrow: 'MASCHINENHANDEL · HOLP',
           title: 'HOLP Serviceportal',
           text: 'Ein Portal für Händler, Partner und Kunden: Servicefälle, Ersatzteile, Garantie und Angebote — mit KI-Wissensdatenbank.',
-          liveUrl: '',
+          liveUrl: 'https://serviceportal.holp.eu',
+          openMode: 'tab', // Basic-Auth + Login → eigenes Fenster, bis Demo-Instanz steht
           frameLabel: 'HOLP SERVICEPORTAL — LIVE-DEMO',
           detail: {
             intro:

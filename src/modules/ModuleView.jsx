@@ -142,7 +142,15 @@ function Projekte({ payload }) {
   const [current, setCurrent] = useState(null)
   const [live, setLive] = useState(false)
 
-  if (current && live && current.liveUrl) {
+  // openMode 'tab': gehostete App in eigenem Fenster oeffnen (Login/Basic-Auth
+  // dort einmal morgens erledigen) — solange keine einbettbare Demo-Instanz
+  // existiert. Ohne openMode: Demo-Instanz im iframe (Demo-Rahmen).
+  function openLive(p) {
+    if (p.openMode === 'tab') window.open(p.liveUrl, '_blank', 'noopener')
+    else setLive(true)
+  }
+
+  if (current && live && current.liveUrl && current.openMode !== 'tab') {
     return (
       <>
         <IframeModule payload={{ url: current.liveUrl, frameLabel: current.frameLabel }} />
@@ -172,9 +180,12 @@ function Projekte({ payload }) {
         </div>
         {current.detail.fakten && <p className="detail__fakten">{current.detail.fakten}</p>}
         <div className="detail__cta-row" style={{ gap: 16, flexWrap: 'wrap' }}>
+          {current.liveUrl && current.openMode === 'tab' && (
+            <span className="detail__fakten" style={{ width: '100%' }}>Öffnet die echte, gehostete App in einem eigenen Fenster.</span>
+          )}
           {current.liveUrl ? (
-            <button className="pill pressable lead-red-cta detail__cta" onClick={() => setLive(true)}>
-              Live ausprobieren →
+            <button className="pill pressable lead-red-cta detail__cta" onClick={() => openLive(current)}>
+              {current.openMode === 'tab' ? 'App öffnen →' : 'Live ausprobieren →'}
             </button>
           ) : (
             <span className="detail__fakten" style={{ alignSelf: 'center' }}>Live-Demo wird eingerichtet</span>
