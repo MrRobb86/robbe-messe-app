@@ -95,8 +95,8 @@ src/
 
 ## Push & Deploy — Stolperfalle GitHub-Konto
 
-Auf dem Mac sind in `gh` mehrere GitHub-Konten angemeldet (u. a. `ghiathnj88`). Ist ein
-fremdes Konto aktiv, schlägt `git push` mit **403** fehl — und `gh run list` zeigt dann
+Florian betreibt zwei eigene GitHub-Konten (`MrRobb86` und `ghiathnj88`), beide in `gh` angemeldet. Ist das
+andere Konto aktiv, schlägt `git push` in MrRobb86-Repos mit **403** fehl — und `gh run list` zeigt dann
 trügerisch den letzten *alten* erfolgreichen Lauf. Deshalb: Remote-URL trägt den
 Benutzer (`https://MrRobb86@github.com/...`), sodass der gh-Credential-Helper immer
 MrRobb86 nimmt. Nach jedem Push **Live-Bundle mit `dist/index.html` vergleichen**
